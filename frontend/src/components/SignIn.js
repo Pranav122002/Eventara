@@ -48,50 +48,64 @@ export default function SignIn() {
 
   return (
     <>
-    
-          <div>
+      <div className="m-32 flex justify-content-center">
         <div>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            placeholder="Email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
+          <img src="./iphone.png" className="h-[40rem]" alt="" />
         </div>
+        <div className="-ml-32 w-96">
+          <div className=" p-6 pt-1 border-2 mt-10 rounded-none ">
+            <h1 className="font-Danc text-4xl italic text-gray-700 text-center mt-3 ">
+              Campus Collab
+            </h1>
+            <div className="mt-10 ">
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  value={email}
+                  className="mt-2 w-5/6 bg-gray-100 border-1 p-2 rounded-md"
+                  placeholder="Email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </div>
 
-        <div>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </div>
+              <div>
+                <input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  value={password}
+                  className="mt-2 w-5/6 bg-gray-100 border-1 p-2 rounded-md"
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </div>
 
-        <div>
-          <button
-            type="submit"
-            onClick={() => {
-              postData();
-            }}
-          >
-            Sign in
-          </button>
-        </div>
+              <div>
+                <button
+                  className="mt-4 mb-10 w-5/6 bg-sky-300 text-white  p-2 rounded-md"
+                  type="submit"
+                  onClick={() => {
+                    postData();
+                  }}
+                >
+                  Sign in
+                </button>
+              </div>
+            </div>
+          </div>
 
-        <div>
-          Don't have an account?
-          <Link to="/signup">
-            <span> Sign Up</span>
-          </Link>
+          <div className="p-6 pt-3 border-2 mt-4 rounded-none ">
+            Don't have an account?
+            <Link to="/signup">
+              <span className=" text-decoration-none"> Sign Up</span>
+            </Link>
+          </div>
         </div>
       </div>
     </>
