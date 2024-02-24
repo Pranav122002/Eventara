@@ -48,7 +48,8 @@ export default function SignIn() {
 
   return (
     <>
-      <div>
+    
+          <div>
         <div>
           <input
             type="email"
