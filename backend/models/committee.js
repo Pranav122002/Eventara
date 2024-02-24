@@ -5,6 +5,9 @@ const committeeSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    committee_image: {
+        type: String,
+    },
     events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'EVENT'

@@ -10,6 +10,7 @@ export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user");
 
   // Toast functions
   const notifyA = (msg) => toast.error(msg);
@@ -41,6 +42,7 @@ export default function SignUp() {
         name: name,
         email: email,
         password: password,
+        role: role
       }),
     })
       .then((res) => res.json())
@@ -94,7 +96,28 @@ export default function SignUp() {
             }}
           />
         </div>
-
+        <div id="roles">
+          <select
+            required
+            placeholder="Choose your role"
+            name="role"
+            id="role"
+            value={role}
+            onChange={(e) => {
+              setRole(e.target.value);
+            }}
+          >
+            <option className="selopt" value="" disabled selected>
+              Chooose your role{" "}
+            </option>
+            <option className="selopt" value="user">
+              user
+            </option>
+            <option className="selopt" value="admin">
+              admin
+            </option>
+          </select>
+        </div>
         <button
           type="submit"
           id="submit-btn"

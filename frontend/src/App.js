@@ -15,11 +15,12 @@ import UserProfile from "./components/UserProfile";
 import PersonalChat from "./components/PersonalChat";
 import GroupChat from "./components/GroupChat";
 import CommitteePage from "./screens/CommitteePage";
-
+import { UserProvider } from "./components/UserContext";
 
 function App() {
   return (
     <BrowserRouter>
+      <UserProvider>
       <div className="App">
         <Navbar />
         <Routes>
@@ -32,10 +33,13 @@ function App() {
           <Route path="/chat" element={<Chat />}></Route>
           <Route path="/personal-chat" element={<PersonalChat />}></Route>
           <Route path="/group-chat" element={<GroupChat />}></Route>
-          <Route path="/committee" element={<CommitteePage/>} ></Route>
+          <Route path="/committee" element={<CommitteePage />} ></Route>
+          <Route path="/create-committee" element={<></>}></Route>
+          <Route></Route>
         </Routes>
         <ToastContainer />
       </div>
+      </UserProvider>
     </BrowserRouter>
   );
 }
