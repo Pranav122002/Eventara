@@ -2,17 +2,12 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
+import { Navbar as BootstrapNavbar, Nav, NavDropdown } from 'react-bootstrap';
 
 export default function Navbar(props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [onHome, setOnHome] = useState(false);
-  const [onChat, setOnChat] = useState(false);
-  const [onProfile, setOnProfile] = useState(false);
-  const [onCreateCom, setOnCreateCom] = useState(false)
-  // const [user, setUser] = useState("");
   const [showVNavbar, setShowVNavbar] = useState(false);
-
   var { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -26,143 +21,12 @@ export default function Navbar(props) {
     setShowVNavbar(!showVNavbar);
   };
 
-  useEffect(() => {
-    setOnHome(location.pathname === "/home");
-    setOnChat(location.pathname === "/chat");
-    setOnProfile(location.pathname === "/profile");
-    setOnCreateCom(location.pathname === "/create-committee")
-
-  }, [location]);
-
-  const loginStatus = () => {
-    // console.log("hello")
-    if (!user) {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-
-      user = storedUser;
-    }
-
-    if (user?.role === "admin") {
-      return (
-        <>
-          <Link className="borderrad" to="/analytics">
-            <div className="navimgspace">
-              <img className="navimg" src="./analytics.png" alt="" />
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Analytics
-            </li>
-          </Link>
-
-          <Link
-            className="borderrad"
-            to="/signin"
-            onClick={() => {
-              localStorage.clear();
-              // notifyB("Logout successfull.");
-            }}
-          >
-            <div className="navimgspace">
-              {" "}
-              <img className="navimg" src="./logout3.png" alt="" />
-            </div>
-            <li style={{ color: "red" }} className="navli">
-              Sign out
-            </li>
-          </Link>
-        </>
-      );
-    } else if (user?.role === "volunteer") {
-      return (
-        <>
-          <Link className="borderrad" to="/volunteer">
-            <div className="navimgspace">
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Volunteer
-            </li>
-          </Link>
-
-          <Link className="borderrad" to="/chats">
-            <div className="navimgspace">
-              {" "}
-              <img
-                className="navimg"
-                id="adce"
-                src="./chat5.png"
-                alt=""
-                style={{ color: "none" }}
-              />
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Chats
-            </li>
-          </Link>
-
-          <Link
-            className="borderrad"
-            to="/signin"
-            onClick={() => {
-              localStorage.clear();
-              // notifyB("Logout successfull.");
-            }}
-          >
-            <div className="navimgspace">
-              {" "}
-              <img className="navimg" src="./logout3.png" alt="" />
-            </div>
-            <li style={{ color: "red" }} className="navli">
-              Sign out
-            </li>
-          </Link>
-        </>
-      );
-    } else if (user?.role === "user") {
-      return (
-        <>
-          <Link className="borderrad" to="/events">
-            <div className="navimgspace">
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Events
-            </li>
-          </Link>
-          <Link className="borderrad" to="/committees">
-            <div className="navimgspace">
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Committees
-            </li>
-          </Link>
-          <Link className="borderrad" to="/create-committee">
-            <div className="navimgspace">
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Create Committee
-            </li>
-          </Link>
-
-          <Link
-            className="borderrad"
-            to="/signin"
-            onClick={() => {
-              localStorage.clear();
-              // notifyB("Logout successfull.");
-            }}
-          >
-            <div className="navimgspace">
-              {" "}
-              <img className="navimg" src="./logout3.png" alt="" />
-            </div>
-            <li style={{ color: "red" }} className="navli">
-              Sign out
-            </li>
-          </Link>
-        </>
-      );
-    }
+  const handleSignOut = () => {
+    localStorage.clear();
+    // notifyB("Logout successfull.");
   };
-
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  user = storedUser;
   return (
     <div>
       {!["/signup", "/signin", "/", "/about-us"].includes(
@@ -174,7 +38,48 @@ export default function Navbar(props) {
                 <h1>Services</h1>
               </div>
               <div className="two" onClick={props.handleShowvNavbar}>
-                <ul className="nav-menu">{loginStatus()}</ul>
+                <ul className="nav-menu">
+                  <BootstrapNavbar collapseOnSelect expand="lg">
+                    <BootstrapNavbar.Toggle aria-controls="responsive-navbar-nav" />
+                    <BootstrapNavbar.Collapse id="responsive-navbar-nav">
+                      <Nav className="mr-auto">
+                        {user?.role === "admin" && (
+                          <Link to="/analytics" className="nav-link">
+                            Analytics
+                          </Link>
+                        )}
+                        {user?.role === "volunteer" && (
+                          <>
+                            <Link to="/volunteer" className="nav-link">
+                              Volunteer
+                            </Link>
+                            <Link to="/chats" className="nav-link">
+                              Chats
+                            </Link>
+                          </>
+                        )}
+                        {user?.role === "user" && (
+                          <>
+                            <Link to="/events" className="nav-link">
+                              Events
+                            </Link>
+                            <Link to="/committees" className="nav-link">
+                              Committees
+                            </Link>
+                            <Link to="/create-committee" className="nav-link">
+                              Create Committee
+                            </Link>
+                          </>
+                        )}
+                      </Nav>
+                      <Nav>
+                        <Link to="/signin" className="nav-link" onClick={handleSignOut}>
+                          Sign out
+                        </Link>
+                      </Nav>
+                    </BootstrapNavbar.Collapse>
+                  </BootstrapNavbar>
+                </ul>
               </div>
             </div>
           </div>
