@@ -41,7 +41,7 @@ export default function SignIn() {
           localStorage.setItem("jwt", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
 
-          navigate("/home");
+          navigate("/events");
         }
       });
   };

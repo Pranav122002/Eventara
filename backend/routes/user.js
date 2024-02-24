@@ -39,4 +39,13 @@ router.post("/api/search-users", (req, res) => {
     });
 });
 
+
+router.get('/api/admins', async (req, res) => {
+  try {
+    const admins = await USER.find({ role: 'admin' });
+    res.json(admins);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 module.exports = router;

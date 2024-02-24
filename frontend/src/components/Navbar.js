@@ -53,7 +53,7 @@ export default function Navbar(props) {
               Analytics
             </li>
           </Link>
-          
+
           <Link
             className="borderrad"
             to="/signin"
@@ -120,40 +120,25 @@ export default function Navbar(props) {
     } else if (user?.role === "user") {
       return (
         <>
-          <Link className="borderrad" to="/donate-medicines">
+          <Link className="borderrad" to="/events">
             <div className="navimgspace">
             </div>
             <li style={{ color: "black" }} className="navli">
-              Donate
+              Events
             </li>
           </Link>
-
-          <Link
-            className="borderrad"
-            to="/signin"
-            onClick={() => {
-              localStorage.clear();
-              // notifyB("Logout successfull.");
-            }}
-          >
-            <div className="navimgspace">
-              {" "}
-              <img className="navimg" src="./logout3.png" alt="" />
-            </div>
-            <li style={{ color: "red" }} className="navli">
-              Sign out
-            </li>
-          </Link>
-        </>
-      );
-    } else if (user?.role === "doctor") {
-      return (
-        <>
-          <Link className="borderrad" to="/donate-medicines">
+          <Link className="borderrad" to="/committees">
             <div className="navimgspace">
             </div>
             <li style={{ color: "black" }} className="navli">
-              Donate
+              Committees
+            </li>
+          </Link>
+          <Link className="borderrad" to="/create-committee">
+            <div className="navimgspace">
+            </div>
+            <li style={{ color: "black" }} className="navli">
+              Create Committee
             </li>
           </Link>
 
@@ -183,17 +168,17 @@ export default function Navbar(props) {
       {!["/signup", "/signin", "/", "/about-us"].includes(
         useLocation().pathname
       ) && (
-        <div className={`mainnavss ${props.showvNavbar && "active"} `}>
-          <div className={`navbar ${showVNavbar && "active"}`}>
-            <div className="one" onClick={handleShowVNavbar}>
-              <h1>Services</h1>
-            </div>
-            <div className="two" onClick={props.handleShowvNavbar}>
-              <ul className="nav-menu">{loginStatus()}</ul>
+          <div className={`mainnavss ${props.showvNavbar && "active"} `}>
+            <div className={`navbar ${showVNavbar && "active"}`}>
+              <div className="one" onClick={handleShowVNavbar}>
+                <h1>Services</h1>
+              </div>
+              <div className="two" onClick={props.handleShowvNavbar}>
+                <ul className="nav-menu">{loginStatus()}</ul>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

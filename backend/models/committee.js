@@ -28,6 +28,17 @@ const committeeSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'USER'
     }],
+    approvals: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'USER'
+        },
+        status: {
+            type: String,
+            enum: ['accepted', 'rejected', 'pending'],
+            default: 'pending'
+        }
+    }],
     creation_date: {
         type: Date,
         default: Date.now
