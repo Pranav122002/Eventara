@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../css/Profile.css";
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import { API_BASE_URL } from "../config";
 export default function Profile() {
   const [user, setUser] = useState("");
 
   const fetchUserData = async () => {
     try {
       const response = await fetch(
-        `${API_BASE_URL}/user/${JSON.parse(localStorage.getItem("user"))._id}`,
+        `${API_BASE_URL}/api/user/${JSON.parse(localStorage.getItem("user"))._id}`,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -32,6 +32,7 @@ export default function Profile() {
     <>
       <p>{user.name}</p>
       <p>{user.email}</p>
+      <h1>Profile</h1>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import { API_BASE_URL } from "../config";
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function UserProfie() {
   const { userid } = useParams();
@@ -8,7 +9,7 @@ export default function UserProfie() {
   const [user, setUser] = useState("");
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/user/${userid}`, {
+    fetch(`${API_BASE_URL}/api/user/${userid}`, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwt"),
       },
