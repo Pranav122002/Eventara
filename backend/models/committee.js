@@ -5,6 +5,9 @@ const committeeSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    committee_image: {
+        type: String,
+    },
     events: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'EVENT'
@@ -24,6 +27,17 @@ const committeeSchema = mongoose.Schema({
     members: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'USER'
+    }],
+    approvals: [{
+        user: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'USER'
+        },
+        status: {
+            type: String,
+            enum: ['accepted', 'rejected', 'pending'],
+            default: 'pending'
+        }
     }],
     creation_date: {
         type: Date,

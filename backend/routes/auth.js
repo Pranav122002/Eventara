@@ -7,8 +7,8 @@ const jwt = require("jsonwebtoken");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 router.post("/api/signup", (req, res) => {
-  const { name, email, password } = req.body;
-
+  const { name, email, password, role } = req.body;
+  console.log(req.body)
   if (!name || !email || !password) {
     return res.status(422).json({ error: "Please add all the fields" });
   }
@@ -24,6 +24,7 @@ router.post("/api/signup", (req, res) => {
         name,
         email,
         password: hashedPassword,
+        role
       });
 
       user
@@ -38,14 +39,15 @@ router.post("/api/signup", (req, res) => {
   });
 });
 
-router.post("/api/signin", (req, res) => {
+router.post("/api/signin", async(req, res) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
+  console.log(req.body)
+  if (!email || !password) {  
     return res.status(422).json({ error: "Please add email and password" });
   }
 
   USER.findOne({ email: email }).then((savedUser) => {
+    console.log(savedUser)
     if (!savedUser) {
       return res.status(422).json({ error: "Invalid email" });
     }
@@ -55,9 +57,9 @@ router.post("/api/signin", (req, res) => {
         if (match) {
           // return res.status(200).json({ message: "Signed in Successfully" })
           const token = jwt.sign({ _id: savedUser.id }, JWT_SECRET);
-          const { _id, name, email } = savedUser;
+          const { _id, name, email, role } = savedUser;
 
-          res.json({ token, user: { _id, name, email } });
+          res.json({ token, user: { _id, name, email, role } });
         } else {
           return res.status(422).json({ error: "Invalid password" });
         }

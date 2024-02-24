@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import Button from 'react-bootstrap/Button';
+
+
 import { API_BASE_URL } from '../config';
 
 const CommitteePage = () => {
@@ -42,6 +45,7 @@ const CommitteePage = () => {
                 </ul>
                 <Button onClick={handleSubscribe}>Subscribe</Button>
                 <Button onClick={handleEvents}>Events</Button>
+                <Button onClick={handleEvents}>Become Member</Button>
               </Card.Body>
             </Card>
           </Col>
