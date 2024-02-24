@@ -39,14 +39,19 @@ router.put('/api/update-committee/:id', async (req, res) => {
 
 router.get('/api/all-committees', async (req, res) => {
     try {
-      const committees = await COMMITTEE.find()
-        .populate('members', 'name')
-        .select('committee_desc committee_name')
-      res.json(committees);
+        const committees = await COMMITTEE.find()
+            .populate('members', 'name')
+            .select('committee_desc committee_name')
+        res.json(committees);
     } catch (err) {
-      res.status(500).json({ message: err.message });
+        res.status(500).json({ message: err.message });
     }
-  });
-  
+});
+
+router.post('/api/subscribe', async(req, res)=>{
+
+})
+
+
 
 module.exports = router

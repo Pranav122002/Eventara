@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../config";
+
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-const socket = io(`${BASE_URL}`);
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const socket = io(`${API_BASE_URL}`);
 
 const PersonalChat = () => {
   const [userid, setUserId] = useState("");
@@ -23,7 +25,7 @@ const PersonalChat = () => {
       navigate("/signin");
     } else {
       fetch(
-        `${API_BASE_URL}/user/${JSON.parse(localStorage.getItem("user"))._id}`,
+        `${API_BASE_URL}/api/user/${JSON.parse(localStorage.getItem("user"))._id}`,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -41,7 +43,7 @@ const PersonalChat = () => {
   useEffect(() => {
     if (selectedUser) {
       fetch(
-        `${API_BASE_URL}/all-personal-messages/${
+        `${API_BASE_URL}/api/all-personal-messages/${
           JSON.parse(localStorage.getItem("user"))._id
         }/${selectedUser._id}`
       )
@@ -71,7 +73,7 @@ const PersonalChat = () => {
 
   useEffect(() => {
     fetch(
-      `${API_BASE_URL}/all-users-except/${
+      `${API_BASE_URL}/api/all-users-except/${
         JSON.parse(localStorage.getItem("user"))._id
       }`
     )
@@ -105,7 +107,7 @@ const PersonalChat = () => {
         createdAt: new Date().toISOString(),
       });
 
-      fetch(`${API_BASE_URL}/save-personal-message`, {
+      fetch(`${API_BASE_URL}/api/save-personal-message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

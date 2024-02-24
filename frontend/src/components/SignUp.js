@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import { API_BASE_URL } from "../config";
+// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function SignUp() {
     }
 
     // Sending data to server
-    fetch(`${API_BASE_URL}/signup`, {
+    fetch(`${API_BASE_URL}/api/signup`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",

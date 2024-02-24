@@ -14,7 +14,7 @@ import Navbar from "./components/Navbar";
 import UserProfile from "./components/UserProfile";
 import PersonalChat from "./components/PersonalChat";
 import GroupChat from "./components/GroupChat";
-import Committee from "./screens/Committee";
+import CommitteePage from "./screens/CommitteePage";
 
 
 function App() {
@@ -32,7 +32,7 @@ function App() {
           <Route path="/chat" element={<Chat />}></Route>
           <Route path="/personal-chat" element={<PersonalChat />}></Route>
           <Route path="/group-chat" element={<GroupChat />}></Route>
-          <Route path="/committee" element={<Committee/>} ></Route>
+          <Route path="/committee" element={<CommitteePage/>} ></Route>
         </Routes>
         <ToastContainer />
       </div>
