@@ -33,7 +33,7 @@ async function generatePDFFromCommittee(committee, recipient_number) {
         //upload pdf to cloudinary
         const pdfurl = await uploadPDF(pdfFilePath)
         console.log(pdfurl.url)
-        const message = "Dear admin, a new committee is requested to be formed. Please read the details about the committee and approve it.";
+        const message = `Dear admin, a new committee, ${committee.committee_name}, is requested to be formed. Please read the details about the committee and approve it.`;
         await sendWhatsAppMessage(recipient_number, message, pdfurl.url);
 
         console.log("PDF sent via WhatsApp successfully.");

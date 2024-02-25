@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Modal, Table } from 'react-bootstrap';
 import { API_BASE_URL } from '../config';
 import { toast } from "react-toastify";
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Container, Modal,  Row, Col, Card, Button } from 'react-bootstrap';
 
 
 
@@ -16,7 +15,7 @@ const CommitteeForm = () => {
     const user = JSON.parse(localStorage.getItem('user'))
     const [formData, setFormData] = useState({
         committee_name: '',
-        committee_image: '',
+        committee_image: getRandomImageURL(),
         committee_desc: '',
         committee_head: user._id,
         frequency: '',
@@ -76,7 +75,7 @@ const CommitteeForm = () => {
         setShowModal(true)
     }
 
-    const handleModalSubmit = async(e) => {
+    const handleModalSubmit = async (e) => {
         try {
             console.log(formData)
             console.log('Selected admins:', selectedAdmins);
@@ -93,13 +92,13 @@ const CommitteeForm = () => {
             })
             console.log(formData);
             setShowModal(false);
-            if(res.status==="ok"){
+            if (res.status === "ok") {
                 // Success toast
             }
-        }catch (err){
+        } catch (err) {
             //failure toast
         }
-        
+
 
     };
     const fetchMyCommittees = async () => {
@@ -112,6 +111,9 @@ const CommitteeForm = () => {
             console.error(err)
         }
     };
+    const handleCreateEvent = () => {
+
+    }
     useEffect(() => {
         fetchAdmin()
         fetchMyCommittees()
@@ -180,24 +182,21 @@ const CommitteeForm = () => {
             {/* separate section to get all the committes that the user created */}
             <Container className='mt-3'>
                 <h2>My Committees</h2>
-                <Table striped bordered hover>
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Committee Name</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {myCommittees?.map((committee, index) => (
-                            <tr key={committee._id}>
-                                <td>{index + 1}</td>
-                                <td>{committee.committee_name}</td>
-                                <td>{/* Display status here */}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </Table>
+                <Row xs={1} md={2} lg={3} className="g-4">
+                    {myCommittees?.map((committee, index) => (
+                        <Col key={committee._id}>
+                            <Card className="h-100">
+                                <Card.Body>
+                                    <Card.Title>{committee.committee_name}</Card.Title>
+                                    <Card.Text>Status: {committee.approval_status}</Card.Text>
+                                    {committee.approval_status === 'accepted' && (
+                                        <Button onClick={() => handleCreateEvent(committee._id)}>Create Event</Button>
+                                    )}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
             </Container>
         </Container>
     );
