@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const handlebars = require('handlebars');
 const sendWhatsAppMessage = require('./sendWhatsAppMessage')
+const {uploadPDF} = require('./uploadPDF')
 // Function to generate PDF from Committee document
 async function generatePDFFromCommittee(committee, recipient_number) {
     try {
@@ -26,12 +27,14 @@ async function generatePDFFromCommittee(committee, recipient_number) {
         }
 
         // Save PDF to a file in the directory
-        const pdfFileName = `committee_details_${Date.now()}.pdf`; // Generate unique file name
+        const pdfFileName = `${committee.committee_name}_${Date.now()}.pdf`
         const pdfFilePath = path.join(pdfDirectory, pdfFileName);
         fs.writeFileSync(pdfFilePath, pdfBuffer);
-
+        //upload pdf to cloudinary
+        const pdfurl = await uploadPDF(pdfFilePath)
+        console.log(pdfurl.url)
         const message = "Dear admin, a new committee is requested to be formed. Please read the details about the committee and approve it.";
-        await sendWhatsAppMessage(recipient_number, message, pdfFilePath);
+        await sendWhatsAppMessage(recipient_number, message, pdfurl.url);
 
         console.log("PDF sent via WhatsApp successfully.");
 

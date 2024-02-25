@@ -13,7 +13,7 @@ function sendWhatsAppMessage(to, messageBody, pdfUrl) {
             from: `whatsapp:${whatsapp}`,
             to: `whatsapp:${to}`,
             // mediaUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" 
-            mediaUrl: "D:\Documents\Luap\Career\Projects\kimchi_Agnethon\kimchiCoders\backend\functions\pdfs\committee_details_1708842686615.pdf"
+            mediaUrl: pdfUrl
         })
         .then(message => console.log(message.sid))
         .catch(error => console.error('Error sending message:', error.message));
