@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { API_BASE_URL } from "../config";
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -10,7 +10,8 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
-
+  const [phoneNo, setPhoneNo] = useState("");
+  
   // Toast functions
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
@@ -20,7 +21,7 @@ export default function SignUp() {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 
   const postData = () => {
-    //checking email syntax
+    // Checking email syntax
     if (!emailRegex.test(email)) {
       notifyA("Invalid email");
       return;
@@ -42,6 +43,7 @@ export default function SignUp() {
         email: email,
         password: password,
         role: role,
+        phone_no: phoneNo,
       }),
     })
       .then((res) => res.json())
@@ -64,7 +66,7 @@ export default function SignUp() {
         <div className="-ml-32 w-96">
           <div className=" p-6 pt-1 border-2 mt-10 rounded-none ">
             <h1 className="font-Danc text-4xl italic text-gray-700 text-center mt-3 ">
-              Campus Collab
+              Eventara
             </h1>
             <div className="mt-10 ">
               <div>

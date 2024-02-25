@@ -2,6 +2,17 @@
   text-align: center;
   
 }
+.scrollanim{
+  animation: scrollAnimation 10s linear infinite;
+}
+@keyframes scrollAnimation {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
 .vnavbarr{
   position: fixed;
   z-index: 999;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import "../css/Profile.css";
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 import { API_BASE_URL } from "../config";
 export default function Profile() {
   const [user, setUser] = useState("");
