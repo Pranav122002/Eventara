@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { API_BASE_URL } from '../config';
 import { toast } from "react-toastify";
 import Form from 'react-bootstrap/Form';
-import { Container, Modal,  Row, Col, Card, Button } from 'react-bootstrap';
+import { Container, Modal, Row, Col, Card, Button } from 'react-bootstrap';
 
 
 
@@ -111,8 +111,38 @@ const CommitteeForm = () => {
             console.error(err)
         }
     };
-    const handleCreateEvent = () => {
 
+    const [events, setEvents] = useState();
+    const [showAddEventModal, setShowAddEventModal] = useState(false);
+    const [eventName, setEventName] = useState("");
+    const [eventDate, setEventDate] = useState("");
+    const [eventTime, setEventTime] = useState("");
+    const [eventVenue, setEventVenue] = useState("");
+    const [eventMode, setEventMode] = useState("");
+
+    const isAdmin = user.role === "admin";
+
+    const handleAddEvent = () => {
+        const newEvent = {
+            id: events.length + 1,
+            name: eventName,
+            date: eventDate,
+            time: eventTime,
+            venue: eventVenue,
+            mode: eventMode,
+        };
+        setEvents([...events, newEvent]);
+        setShowAddEventModal(false);
+    };
+
+    const handleDeleteEvent = (id) => {
+        const updatedEvents = events.filter((event) => event.id !== id);
+        setEvents(updatedEvents);
+    };
+
+
+    const handleCreateEvent = () => {
+        setShowAddEventModal(true)
     }
     useEffect(() => {
         fetchAdmin()
@@ -190,7 +220,91 @@ const CommitteeForm = () => {
                                     <Card.Title>{committee.committee_name}</Card.Title>
                                     <Card.Text>Status: {committee.approval_status}</Card.Text>
                                     {committee.approval_status === 'accepted' && (
-                                        <Button onClick={() => handleCreateEvent(committee._id)}>Create Event</Button>
+                                        <><Button
+                                            onClick={() => handleCreateEvent(committee._id)}>
+                                            Create Event
+                                        </Button>
+                                            <Modal
+                                                show={showAddEventModal}
+                                                onHide={() => setShowAddEventModal(false)}
+                                                dialogClassName="modal-dialog-centered mx-auto"
+                                            >
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>Add Event</Modal.Title>
+                                                </Modal.Header>
+                                                <Modal.Body>
+                                                    <Form>
+                                                        <Form.Group controlId="eventName">
+                                                            <Form.Label>Event Name</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter event name"
+                                                                onChange={(e) => setEventName(e.target.value)}
+                                                            />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="eventDate">
+                                                            <Form.Label>Event Date</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter event date"
+                                                                onChange={(e) => setEventDate(e.target.value)}
+                                                            />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="eventTime">
+                                                            <Form.Label>Event Time</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter event time"
+                                                                onChange={(e) => setEventTime(e.target.value)}
+                                                            />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="eventVenue">
+                                                            <Form.Label>Event Venue</Form.Label>
+                                                            <Form.Control
+                                                                as="select"
+                                                                onChange={(e) => setEventVenue(e.target.value)}
+                                                            >
+                                                                <option value="">Select Venue</option>
+
+                                                                <option value="Room 101">Room 101</option>
+                                                                <option value="Room 103">Room 103</option>
+                                                                <option value="Room 104">Room 104</option>
+                                                                <option value="Room 105">Room 105</option>
+                                                                <option value="Room 201">Room 201</option>
+                                                                <option value="Room 205">Room 205</option>
+                                                                <option value="Room 304">Room 304</option>
+                                                                <option value="Room 305">Room 305</option>
+                                                                <option value="Room 401">Room 401</option>
+                                                                <option value="Room 403">Room 403</option>
+                                                                <option value="Room 404">Room 404</option>
+                                                                <option value="Room 405">Room 405</option>
+                                                            </Form.Control>
+                                                        </Form.Group>
+
+                                                        <Form.Group controlId="eventMode">
+                                                            <Form.Label>Event Mode</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter event mode"
+                                                                onChange={(e) => setEventMode(e.target.value)}
+                                                            />
+                                                        </Form.Group>
+                                                    </Form>
+                                                </Modal.Body>
+                                                <Modal.Footer>
+                                                    <Button
+                                                        variant="secondary"
+                                                        onClick={() => setShowAddEventModal(false)}
+                                                    >
+                                                        Close
+                                                    </Button>
+                                                    <Button variant="primary" onClick={handleAddEvent}>
+                                                        Add Event
+                                                    </Button>
+                                                </Modal.Footer>
+                                            </Modal>
+                                        </>
+
                                     )}
                                 </Card.Body>
                             </Card>
