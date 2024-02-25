@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Committee Details</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Committee Details</h1>
+    </div>
+    <div class="committee-name">{{committee.committee_name}}</div>
+    {{#if committee_image}}
+        <img src="{{committee_image}}" alt="Committee Image" class="committee-image"/>
+    {{/if}}
+    <div class="description">{{committee.committee_desc}}</div>
+    <div class="details">
+        <h2>Details:</h2>
+        <p>Approval Status: {{approval_status}}</p>
+        <p>Creation Date: {{creation_date}}</p>
+        <p>Status: {{status}}</p>
+        {{#if meeting_schedule}}
+            <p>Meeting Schedule: {{meeting_schedule.frequency}} - {{meeting_schedule.time}} ({{meeting_schedule.location}})</p>
+        {{/if}}
+        {{#if budget}}
+            <p>Budget: {{committee.budget}}</p>
+        {{/if}}
+        {{#if contact_information}}
+            <p>Contact Information: Email - {{committee.contact_information.email}}, Phone - {{committee.contact_information.phone_number}}, Office Location - {{contact_information.office_location}}</p>
+        {{/if}}
+    </div>
+    <div class="tags">
+        <h2>Tags:</h2>
+        <ul>
+            {{#each committee.tags}}
+                <li>{{this}}</li>
+            {{/each}}
+        </ul>
+    </div>
+</body>
+</html>

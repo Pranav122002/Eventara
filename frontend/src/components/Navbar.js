@@ -37,12 +37,12 @@ export default function Navbar(props) {
             <div className="vnavbarr pt-0 min-w-[18rem] h-screen bg-white border-r-2 ">
                <div className="flex m-3 p-3 rounded ">
                   <img src="./lines2.png" className="liness h-7" alt="" />
-                  <h1 className="font-Danc text-3xl italic text-gray-700">Campus Colab</h1>
+                  <h1 className="font-Danc text-3xl italic text-gray-700">Eventara</h1>
                 </div>
 
               <NavLink
-                to="/analytics"
-                className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                to="/permit"
+                className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
               >
                 <img className="h-8 m-3" src="./store.png" alt="" />
                 <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
@@ -88,7 +88,7 @@ export default function Navbar(props) {
               <div className="vnavbarr pt-0 min-w-[20rem] h-screen bg-white border-r-2 ">
                 <div className="flex m-3 p-3 rounded ">
                   <img src="./lines2.png" className="liness h-7" alt="" />
-                  <h1 className="font-Danc  text-3xl italic text-gray-700">Campus Colab</h1>
+                  <h1 className="font-Danc text-3xl italic text-gray-700">Eventara</h1>
                 </div>
 
                 <NavLink

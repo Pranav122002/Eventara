@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Modal } from 'react-bootstrap';
 import { API_BASE_URL } from '../config';
 import { toast } from "react-toastify";
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import { Container, Modal, Row, Col, Card, Button } from 'react-bootstrap';
 
 
 
@@ -11,10 +10,12 @@ import Button from 'react-bootstrap/Button';
 const CommitteeForm = () => {
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
+    const [myCommittees, setMyCommittees] = useState([]);
+
     const user = JSON.parse(localStorage.getItem('user'))
     const [formData, setFormData] = useState({
         committee_name: '',
-        committee_image: '',
+        committee_image: getRandomImageURL(),
         committee_desc: '',
         committee_head: user._id,
         frequency: '',
@@ -33,7 +34,6 @@ const CommitteeForm = () => {
             var res = await fetch(`${API_BASE_URL}/api/admins`)
             res = await res.json()
             setAdmins(res)
-            console.log(res)
         } catch (err) {
 
         }
@@ -57,12 +57,6 @@ const CommitteeForm = () => {
     }
 
     const [showModal, setShowModal] = useState(false);
-    // const [admins, setAdmins] = useState([
-    //     { id: 1, name: 'Admin 1' },
-    //     { id: 2, name: 'Admin 2' },
-    //     { id: 3, name: 'Admin 3' },
-    //     // Add more admins as needed
-    // ]);
     const [selectedAdmins, setSelectedAdmins] = useState([]);
 
     const handleAdminCheckboxChange = (adminId, isChecked) => {
@@ -81,27 +75,79 @@ const CommitteeForm = () => {
         setShowModal(true)
     }
 
-    const handleModalSubmit = (e) => {
-        console.log(formData)
-        // Handle submission of selected admins
-        console.log('Selected admins:', selectedAdmins);
-        e.preventDefault();
-        fetch(`${API_BASE_URL}/api/create-committee`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                formData,
-                selectedAdmins
-            }),
-        })
-        // Handle form submission (e.g., send data to backend)
-        console.log(formData);
-        setShowModal(false);
+    const handleModalSubmit = async (e) => {
+        try {
+            console.log(formData)
+            console.log('Selected admins:', selectedAdmins);
+            e.preventDefault();
+            const res = await fetch(`${API_BASE_URL}/api/create-committee`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    formData,
+                    selectedAdmins
+                }),
+            })
+            console.log(formData);
+            setShowModal(false);
+            if (res.status === "ok") {
+                // Success toast
+            }
+        } catch (err) {
+            //failure toast
+        }
+
+
     };
+    const fetchMyCommittees = async () => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/my-committees/${user._id}`)
+            const data = await res.json()
+            console.log(data)
+            setMyCommittees(data);
+        } catch (err) {
+            console.error(err)
+        }
+    };
+
+    const [events, setEvents] = useState();
+    const [showAddEventModal, setShowAddEventModal] = useState(false);
+    const [eventName, setEventName] = useState("");
+    const [eventDate, setEventDate] = useState("");
+    const [eventTime, setEventTime] = useState("");
+    const [eventVenue, setEventVenue] = useState("");
+    const [eventMode, setEventMode] = useState("");
+
+    const isAdmin = user.role === "admin";
+
+    const handleAddEvent = () => {
+        const newEvent = {
+            id: events.length + 1,
+            name: eventName,
+            date: eventDate,
+            time: eventTime,
+            venue: eventVenue,
+            mode: eventMode,
+        };
+        setEvents([...events, newEvent]);
+        setShowAddEventModal(false);
+    };
+
+    const handleDeleteEvent = (id) => {
+        const updatedEvents = events.filter((event) => event.id !== id);
+        setEvents(updatedEvents);
+    };
+
+
+    const handleCreateEvent = () => {
+        setShowAddEventModal(true)
+    }
     useEffect(() => {
         fetchAdmin()
+        fetchMyCommittees()
+        console.log(myCommittees)
     }, [])
     return (
         <Container>
@@ -134,7 +180,7 @@ const CommitteeForm = () => {
 
                 {/* Add other form fields as per your model */}
 
-                <Button variant="primary" onClick={handleModalOpen} >
+                <Button variant="primary" onClick={handleModalOpen} className='mt-3' >
                     Next
                 </Button>
             </Form>
@@ -163,6 +209,109 @@ const CommitteeForm = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            {/* separate section to get all the committes that the user created */}
+            <Container className='mt-3'>
+                <h2>My Committees</h2>
+                <Row xs={1} md={2} lg={3} className="g-4">
+                    {myCommittees?.map((committee, index) => (
+                        <Col key={committee._id}>
+                            <Card className="h-100">
+                                <Card.Body>
+                                    <Card.Title>{committee.committee_name}</Card.Title>
+                                    <Card.Text>Status: {committee.approval_status}</Card.Text>
+                                    {committee.approval_status === 'accepted' && (
+                                        <><Button
+                                            onClick={() => handleCreateEvent(committee._id)}>
+                                            Create Event
+                                        </Button>
+                                            <Modal
+                                                show={showAddEventModal}
+                                                onHide={() => setShowAddEventModal(false)}
+                                                dialogClassName="modal-dialog-centered mx-auto"
+                                            >
+                                                <Modal.Header closeButton>
+                                                    <Modal.Title>Add Event</Modal.Title>
+                                                </Modal.Header>
+                                                <Modal.Body>
+                                                    <Form>
+                                                        <Form.Group controlId="eventName">
+                                                            <Form.Label>Event Name</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter event name"
+                                                                onChange={(e) => setEventName(e.target.value)}
+                                                            />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="eventDate">
+                                                            <Form.Label>Event Date</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter event date"
+                                                                onChange={(e) => setEventDate(e.target.value)}
+                                                            />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="eventTime">
+                                                            <Form.Label>Event Time</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter event time"
+                                                                onChange={(e) => setEventTime(e.target.value)}
+                                                            />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="eventVenue">
+                                                            <Form.Label>Event Venue</Form.Label>
+                                                            <Form.Control
+                                                                as="select"
+                                                                onChange={(e) => setEventVenue(e.target.value)}
+                                                            >
+                                                                <option value="">Select Venue</option>
+
+                                                                <option value="Room 101">Room 101</option>
+                                                                <option value="Room 103">Room 103</option>
+                                                                <option value="Room 104">Room 104</option>
+                                                                <option value="Room 105">Room 105</option>
+                                                                <option value="Room 201">Room 201</option>
+                                                                <option value="Room 205">Room 205</option>
+                                                                <option value="Room 304">Room 304</option>
+                                                                <option value="Room 305">Room 305</option>
+                                                                <option value="Room 401">Room 401</option>
+                                                                <option value="Room 403">Room 403</option>
+                                                                <option value="Room 404">Room 404</option>
+                                                                <option value="Room 405">Room 405</option>
+                                                            </Form.Control>
+                                                        </Form.Group>
+
+                                                        <Form.Group controlId="eventMode">
+                                                            <Form.Label>Event Mode</Form.Label>
+                                                            <Form.Control
+                                                                type="text"
+                                                                placeholder="Enter event mode"
+                                                                onChange={(e) => setEventMode(e.target.value)}
+                                                            />
+                                                        </Form.Group>
+                                                    </Form>
+                                                </Modal.Body>
+                                                <Modal.Footer>
+                                                    <Button
+                                                        variant="secondary"
+                                                        onClick={() => setShowAddEventModal(false)}
+                                                    >
+                                                        Close
+                                                    </Button>
+                                                    <Button variant="primary" onClick={handleAddEvent}>
+                                                        Add Event
+                                                    </Button>
+                                                </Modal.Footer>
+                                            </Modal>
+                                        </>
+
+                                    )}
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))}
+                </Row>
+            </Container>
         </Container>
     );
 };

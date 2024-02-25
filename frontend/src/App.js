@@ -18,6 +18,7 @@ import Events from "./screens/Events";
 import Venue from "./screens/Venue";
 import CreateCom from "./components/CreateCom"
 import { UserProvider } from "./components/UserContext";
+import Permit from "./components/Permit";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
           <Route path="/events" element={<Events />} ></Route>
           <Route path="/venue" element={<Venue />} ></Route>
           <Route path="/create-committee" element={<CreateCom/>}></Route>
+          <Route path="/permit" element={<Permit/>}></Route>
           <Route></Route>
         </Routes>
         <ToastContainer />

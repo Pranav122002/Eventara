@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { API_BASE_URL } from "../config";
 
 export default function SignIn() {
@@ -89,7 +89,7 @@ export default function SignIn() {
         <div className="-ml-32 w-96 relative z-909">
           <div className=" p-6 pt-1 border-2 mt-10 rounded-none ">
             <h1 className="font-Danc text-4xl italic text-gray-700 text-center mt-3 ">
-              Campus Collab
+              Eventara
             </h1>
             <div className="mt-10 ">
               <div>
