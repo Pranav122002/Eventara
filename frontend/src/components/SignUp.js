@@ -44,7 +44,6 @@ export default function SignUp() {
         password: password,
         role: role,
         phone_no: phoneNo,
-        role: role,
       }),
     })
       .then((res) => res.json())
@@ -67,7 +66,7 @@ export default function SignUp() {
         <div className="-ml-32 w-96">
           <div className=" p-6 pt-1 border-2 mt-10 rounded-none ">
             <h1 className="font-Danc text-4xl italic text-gray-700 text-center mt-3 ">
-              Campus Collab
+              Eventara
             </h1>
             <div className="mt-10 ">
               <div>
