@@ -204,6 +204,10 @@ const CommitteeForm = () => {
         console.log(allRooms)
     }, [])
     return (
+    <>
+    <div className='ml-[20rem]'>
+
+    
         <Container>
             <h1>Create Committee</h1>
             <Form>
@@ -388,6 +392,8 @@ const CommitteeForm = () => {
                 </Row>
             </Container>
         </Container>
+        </div>
+    </>    
     );
 };
 
