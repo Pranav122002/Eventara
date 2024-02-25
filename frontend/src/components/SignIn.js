@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { API_BASE_URL } from "../config";
 
 export default function SignIn() {
@@ -47,52 +47,44 @@ export default function SignIn() {
   };
 
   return (
-    <>
-      <div>
-        <div>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            placeholder="Email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </div>
+    <Container>
+      <Row className="justify-content-md-center">
+        <Col xs={12} md={6}>
+          <Form>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
 
-        <div>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </div>
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
 
-        <div>
-          <button
-            type="submit"
-            onClick={() => {
-              postData();
-            }}
-          >
-            Sign in
-          </button>
-        </div>
+            <Button
+              variant="primary"
+              type="button"
+              onClick={() => postData()}
+            >
+              Sign In
+            </Button>
+          </Form>
 
-        <div>
-          Don't have an account?
-          <Link to="/signup">
-            <span> Sign Up</span>
-          </Link>
-        </div>
-      </div>
-    </>
+          <div>
+            Don't have an account? <Link to="/signup">Sign Up</Link>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }

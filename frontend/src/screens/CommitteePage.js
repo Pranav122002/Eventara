@@ -14,6 +14,12 @@ const CommitteePage = () => {
   const handleEvents = ()=>{
     
   }
+  const handleBecomeMember = () => {
+
+  }
+  const handleChat = () => {
+    
+  }
   useEffect(() => {
     fetchCommittees();
   }, []);
@@ -45,7 +51,8 @@ const CommitteePage = () => {
                 </ul>
                 <Button onClick={handleSubscribe}>Subscribe</Button>
                 <Button onClick={handleEvents}>Events</Button>
-                <Button onClick={handleEvents}>Become Member</Button>
+                <Button onClick={handleBecomeMember}>Become Member</Button>
+                <Button onClick={handleChat}>Chat</Button>
               </Card.Body>
             </Card>
           </Col>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Container, Modal } from 'react-bootstrap';
+import { Container, Modal, Table } from 'react-bootstrap';
 import { API_BASE_URL } from '../config';
 import { toast } from "react-toastify";
 import Form from 'react-bootstrap/Form';
@@ -11,6 +11,8 @@ import Button from 'react-bootstrap/Button';
 const CommitteeForm = () => {
     const notifyA = (msg) => toast.error(msg);
     const notifyB = (msg) => toast.success(msg);
+    const [myCommittees, setMyCommittees] = useState([]);
+
     const user = JSON.parse(localStorage.getItem('user'))
     const [formData, setFormData] = useState({
         committee_name: '',
@@ -33,7 +35,6 @@ const CommitteeForm = () => {
             var res = await fetch(`${API_BASE_URL}/api/admins`)
             res = await res.json()
             setAdmins(res)
-            console.log(res)
         } catch (err) {
 
         }
@@ -57,12 +58,6 @@ const CommitteeForm = () => {
     }
 
     const [showModal, setShowModal] = useState(false);
-    // const [admins, setAdmins] = useState([
-    //     { id: 1, name: 'Admin 1' },
-    //     { id: 2, name: 'Admin 2' },
-    //     { id: 3, name: 'Admin 3' },
-    //     // Add more admins as needed
-    // ]);
     const [selectedAdmins, setSelectedAdmins] = useState([]);
 
     const handleAdminCheckboxChange = (adminId, isChecked) => {
@@ -81,27 +76,46 @@ const CommitteeForm = () => {
         setShowModal(true)
     }
 
-    const handleModalSubmit = (e) => {
-        console.log(formData)
-        // Handle submission of selected admins
-        console.log('Selected admins:', selectedAdmins);
-        e.preventDefault();
-        fetch(`${API_BASE_URL}/api/create-committee`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                formData,
-                selectedAdmins
-            }),
-        })
-        // Handle form submission (e.g., send data to backend)
-        console.log(formData);
-        setShowModal(false);
+    const handleModalSubmit = async(e) => {
+        try {
+            console.log(formData)
+            console.log('Selected admins:', selectedAdmins);
+            e.preventDefault();
+            const res = await fetch(`${API_BASE_URL}/api/create-committee`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    formData,
+                    selectedAdmins
+                }),
+            })
+            console.log(formData);
+            setShowModal(false);
+            if(res.status==="ok"){
+                // Success toast
+            }
+        }catch (err){
+            //failure toast
+        }
+        
+
+    };
+    const fetchMyCommittees = async () => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/my-committees/${user._id}`)
+            const data = await res.json()
+            console.log(data)
+            setMyCommittees(data);
+        } catch (err) {
+            console.error(err)
+        }
     };
     useEffect(() => {
         fetchAdmin()
+        fetchMyCommittees()
+        console.log(myCommittees)
     }, [])
     return (
         <Container>
@@ -134,7 +148,7 @@ const CommitteeForm = () => {
 
                 {/* Add other form fields as per your model */}
 
-                <Button variant="primary" onClick={handleModalOpen} >
+                <Button variant="primary" onClick={handleModalOpen} className='mt-3' >
                     Next
                 </Button>
             </Form>
@@ -163,6 +177,28 @@ const CommitteeForm = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
+            {/* separate section to get all the committes that the user created */}
+            <Container className='mt-3'>
+                <h2>My Committees</h2>
+                <Table striped bordered hover>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Committee Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {myCommittees?.map((committee, index) => (
+                            <tr key={committee._id}>
+                                <td>{index + 1}</td>
+                                <td>{committee.committee_name}</td>
+                                <td>{/* Display status here */}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+            </Container>
         </Container>
     );
 };

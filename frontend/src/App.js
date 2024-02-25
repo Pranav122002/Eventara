@@ -17,6 +17,7 @@ import GroupChat from "./components/GroupChat";
 import CommitteePage from "./screens/CommitteePage";
 import CreateCom from "./components/CreateCom"
 import { UserProvider } from "./components/UserContext";
+import Permit from "./components/Permit";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
           <Route path="/committees" element={<CommitteePage />} ></Route>
           <Route path="/events" element={<CommitteePage />} ></Route>
           <Route path="/create-committee" element={<CreateCom/>}></Route>
+          <Route path="/permit" element={<Permit/>}></Route>
           <Route></Route>
         </Routes>
         <ToastContainer />

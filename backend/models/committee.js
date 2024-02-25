@@ -39,6 +39,11 @@ const committeeSchema = mongoose.Schema({
             default: 'pending'
         }
     }],
+    approval_status: {
+        type: String,
+            enum: ['accepted', 'rejected', 'pending'],
+            default: 'pending'
+    },
     creation_date: {
         type: Date,
         default: Date.now

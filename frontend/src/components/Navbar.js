@@ -44,11 +44,16 @@ export default function Navbar(props) {
                     <BootstrapNavbar.Collapse id="responsive-navbar-nav">
                       <Nav className="mr-auto">
                         {user?.role === "admin" && (
-                          <Link to="/analytics" className="nav-link">
-                            Analytics
-                          </Link>
+                          <>
+                            <Link to="/permit" className="nav-link">
+                              Permit
+                            </Link>
+                            <Link to="/history" className="nav-link">
+                              History
+                            </Link>
+                          </>
                         )}
-                        {user?.role === "volunteer" && (
+                        {/* {user?.role === "volunteer" && (
                           <>
                             <Link to="/volunteer" className="nav-link">
                               Volunteer
@@ -57,7 +62,7 @@ export default function Navbar(props) {
                               Chats
                             </Link>
                           </>
-                        )}
+                        )} */}
                         {user?.role === "user" && (
                           <>
                             <Link to="/events" className="nav-link">

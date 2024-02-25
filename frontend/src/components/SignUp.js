@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import { API_BASE_URL } from "../config";
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -11,7 +10,8 @@ export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("user");
-
+  const [phoneNo, setPhoneNo] = useState("");
+  
   // Toast functions
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
@@ -21,7 +21,7 @@ export default function SignUp() {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/;
 
   const postData = () => {
-    //checking email syntax
+    // Checking email syntax
     if (!emailRegex.test(email)) {
       notifyA("Invalid email");
       return;
@@ -42,7 +42,8 @@ export default function SignUp() {
         name: name,
         email: email,
         password: password,
-        role: role
+        role: role,
+        phone_no: phoneNo,
       }),
     })
       .then((res) => res.json())
@@ -57,83 +58,77 @@ export default function SignUp() {
   };
 
   return (
-    <>
-      <div>
-        <div>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={email}
-            placeholder="Email"
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
-          />
-        </div>
-        <div>
-          <input
-            type="text"
-            name="name"
-            id="name"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
-          />
-        </div>
+    <Container fluid className="mt-5">
+      <Row className="justify-content-md-center">
+        <Col xs={12} md={6}>
+          <Form>
+            <Form.Group controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </Form.Group>
 
-        <div>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
-          />
-        </div>
-        <div id="roles">
-          <select
-            required
-            placeholder="Choose your role"
-            name="role"
-            id="role"
-            value={role}
-            onChange={(e) => {
-              setRole(e.target.value);
-            }}
-          >
-            <option className="selopt" value="" disabled selected>
-              Chooose your role{" "}
-            </option>
-            <option className="selopt" value="user">
-              user
-            </option>
-            <option className="selopt" value="admin">
-              admin
-            </option>
-          </select>
-        </div>
-        <button
-          type="submit"
-          id="submit-btn"
-          onClick={() => {
-            postData();
-          }}
-        >
-          Sign Up
-        </button>
-      </div>
-      <div>
-        Have an account?
-        <Link to="/signin">
-          <span> Sign in</span>
-        </Link>
-      </div>
-    </>
+            <Form.Group controlId="formBasicName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formBasicPhoneNo">
+              <Form.Label>Phone Number</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter phone number"
+                value={phoneNo}
+                onChange={(e) => setPhoneNo(e.target.value)}
+              />
+            </Form.Group>
+
+            <Form.Group controlId="formBasicRole">
+              <Form.Label>Role</Form.Label>
+              <Form.Control
+                as="select"
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+              </Form.Control>
+            </Form.Group>
+
+            <Button
+              variant="primary"
+              type="button"
+              onClick={() => postData()}
+              className="mt-3"
+            >
+              Sign Up
+            </Button>
+          </Form>
+
+          <div className="mt-3">
+            Have an account? <Link to="/signin">Sign in</Link>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 }

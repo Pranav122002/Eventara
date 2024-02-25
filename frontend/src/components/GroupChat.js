@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+import { API_BASE_URL } from "../config";
 
-const socket = io(`${BASE_URL}`);
+const socket = io(`${API_BASE_URL}`);
 
 export default function GroupChat() {
   const [userid, setUserId] = useState("");
