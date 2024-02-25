@@ -39,7 +39,7 @@ function EventList() {
   const [eventVenue, setEventVenue] = useState("");
   const [eventMode, setEventMode] = useState("");
 
-  const isAdmin = user.role === "user";
+  const isAdmin = user.role === "admin";
 
   const handleAddEvent = () => {
     const newEvent = {
