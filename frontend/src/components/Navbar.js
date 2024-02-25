@@ -2,17 +2,12 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
+import { Navbar as BootstrapNavbar, Nav, NavDropdown } from "react-bootstrap";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
   const location = useLocation();
-  const [onHome, setOnHome] = useState(false);
-  const [onChat, setOnChat] = useState(false);
-  const [onProfile, setOnProfile] = useState(false);
-  const [onCreateCom, setOnCreateCom] = useState(false)
-  // const [user, setUser] = useState("");
   const [showVNavbar, setShowVNavbar] = useState(false);
-
   var { user } = useContext(UserContext);
 
   useEffect(() => {
@@ -26,159 +21,102 @@ export default function Navbar(props) {
     setShowVNavbar(!showVNavbar);
   };
 
-  useEffect(() => {
-    setOnHome(location.pathname === "/home");
-    setOnChat(location.pathname === "/chat");
-    setOnProfile(location.pathname === "/profile");
-    setOnCreateCom(location.pathname === "/create-committee")
-
-  }, [location]);
-
-  const loginStatus = () => {
-    // console.log("hello")
-    if (!user) {
-      const storedUser = JSON.parse(localStorage.getItem("user"));
-
-      user = storedUser;
-    }
-
-    if (user?.role === "admin") {
-      return (
-        <>
-          <Link className="borderrad" to="/analytics">
-            <div className="navimgspace">
-              <img className="navimg" src="./analytics.png" alt="" />
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Analytics
-            </li>
-          </Link>
-
-          <Link
-            className="borderrad"
-            to="/signin"
-            onClick={() => {
-              localStorage.clear();
-              // notifyB("Logout successfull.");
-            }}
-          >
-            <div className="navimgspace">
-              {" "}
-              <img className="navimg" src="./logout3.png" alt="" />
-            </div>
-            <li style={{ color: "red" }} className="navli">
-              Sign out
-            </li>
-          </Link>
-        </>
-      );
-    } else if (user?.role === "volunteer") {
-      return (
-        <>
-          <Link className="borderrad" to="/volunteer">
-            <div className="navimgspace">
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Volunteer
-            </li>
-          </Link>
-
-          <Link className="borderrad" to="/chats">
-            <div className="navimgspace">
-              {" "}
-              <img
-                className="navimg"
-                id="adce"
-                src="./chat5.png"
-                alt=""
-                style={{ color: "none" }}
-              />
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Chats
-            </li>
-          </Link>
-
-          <Link
-            className="borderrad"
-            to="/signin"
-            onClick={() => {
-              localStorage.clear();
-              // notifyB("Logout successfull.");
-            }}
-          >
-            <div className="navimgspace">
-              {" "}
-              <img className="navimg" src="./logout3.png" alt="" />
-            </div>
-            <li style={{ color: "red" }} className="navli">
-              Sign out
-            </li>
-          </Link>
-        </>
-      );
-    } else if (user?.role === "user") {
-      return (
-        <>
-          <Link className="borderrad" to="/events">
-            <div className="navimgspace">
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Events
-            </li>
-          </Link>
-          <Link className="borderrad" to="/committees">
-            <div className="navimgspace">
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Committees
-            </li>
-          </Link>
-          <Link className="borderrad" to="/create-committee">
-            <div className="navimgspace">
-            </div>
-            <li style={{ color: "black" }} className="navli">
-              Create Committee
-            </li>
-          </Link>
-
-          <Link
-            className="borderrad"
-            to="/signin"
-            onClick={() => {
-              localStorage.clear();
-              // notifyB("Logout successfull.");
-            }}
-          >
-            <div className="navimgspace">
-              {" "}
-              <img className="navimg" src="./logout3.png" alt="" />
-            </div>
-            <li style={{ color: "red" }} className="navli">
-              Sign out
-            </li>
-          </Link>
-        </>
-      );
-    }
+  const handleSignOut = () => {
+    localStorage.clear();
+    // notifyB("Logout successfull.");
   };
-
+  const storedUser = JSON.parse(localStorage.getItem("user"));
+  user = storedUser;
   return (
-    <div>
+    <div className="p-[0.1rem] " >
       {!["/signup", "/signin", "/", "/about-us"].includes(
         useLocation().pathname
       ) && (
-          <div className={`mainnavss ${props.showvNavbar && "active"} `}>
-            <div className={`navbar ${showVNavbar && "active"}`}>
-              <div className="one" onClick={handleShowVNavbar}>
-                <h1>Services</h1>
-              </div>
-              <div className="two" onClick={props.handleShowvNavbar}>
-                <ul className="nav-menu">{loginStatus()}</ul>
+        <>
+          {user?.role === "admin" && (
+            <div className="vnavbarr pt-0 min-w-[18rem] h-screen bg-white border-r-2 ">
+               <div className="flex m-3 p-3 rounded ">
+                  <img src="./lines2.png" className="liness h-7" alt="" />
+                  <h1 className="font-Danc text-3xl italic text-gray-700">Campus Colab</h1>
+                </div>
+
+              <NavLink
+                to="/analytics"
+                className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+              >
+                <img className="h-8 m-3" src="./store.png" alt="" />
+                <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                  Analytics
+                </h1>
+              </NavLink>
+              <div
+                className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
+                onClick={() => {
+                  localStorage.clear();
+                  navigate("/");
+                }}
+              >
+                <img className="h-6 m-3" src="./logout2.png" alt="" />
+                <h1 className="pl-1 pt-3 pb-3 font-medium text-red-500 text-base tracking-tight">
+                  Logout
+                </h1>
               </div>
             </div>
-          </div>
-        )}
+          )}
+          {user?.role === "user" && (
+            <>
+              <div className="vnavbarr pt-0 min-w-[20rem] h-screen bg-white border-r-2 ">
+                <div className="flex m-3 p-3 rounded ">
+                  <img src="./lines2.png" className="liness h-7" alt="" />
+                  <h1 className="font-Danc text-3xl italic text-gray-700">Campus Colab</h1>
+                </div>
+
+                <NavLink
+                  to="/events"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Events
+                  </h1>
+                </NavLink>
+                <NavLink
+                  to="/committees"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                >
+                  <img className="h-8 m-3" src="./people.png" alt="" />
+                  <h1 className="text-xl  text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Committees
+                  </h1>
+                </NavLink>
+                <NavLink
+                  to="/create-committee"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                >
+                  <img className="h-8 m-3" src="./add.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    New Committee
+                  </h1>
+                </NavLink>
+               
+                <div
+                  className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate("/");
+                  }}
+                >
+                  <img className="h-6 m-3" src="./logout2.png" alt="" />
+                  <h1 className="pl-1 pt-3 pb-3 font-medium text-red-500 text-base tracking-tight">
+                    Logout
+                  </h1>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }
