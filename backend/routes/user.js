@@ -8,6 +8,7 @@ router.get("/api/all-users-except/:id", async (req, res, next) => {
     const users = await USER.find({ _id: { $ne: req.params.id } }).select([
       "email",
       "name",
+      "role",
       "_id",
     ]);
     return res.status(200).json(users);

@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../css/PersonalChat.css";
 
-import { API_BASE_URL } from "../config";
 const BASE_URL = process.env.REACT_APP_BASE_URL;
-// const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-const socket = io(`${API_BASE_URL}`);
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const socket = io(`${BASE_URL}`);
 
 const PersonalChat = () => {
   const [userid, setUserId] = useState("");
@@ -15,6 +16,7 @@ const PersonalChat = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
+  const messageContainerRef = useRef(null);
 
   // require login
   useEffect(() => {
@@ -24,7 +26,7 @@ const PersonalChat = () => {
       navigate("/signin");
     } else {
       fetch(
-        `${API_BASE_URL}/api/user/${JSON.parse(localStorage.getItem("user"))._id}`,
+        `${API_BASE_URL}/user/${JSON.parse(localStorage.getItem("user"))._id}`,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -42,7 +44,7 @@ const PersonalChat = () => {
   useEffect(() => {
     if (selectedUser) {
       fetch(
-        `${API_BASE_URL}/api/all-personal-messages/${
+        `${API_BASE_URL}/all-personal-messages/${
           JSON.parse(localStorage.getItem("user"))._id
         }/${selectedUser._id}`
       )
@@ -72,7 +74,7 @@ const PersonalChat = () => {
 
   useEffect(() => {
     fetch(
-      `${API_BASE_URL}/api/all-users-except/${
+      `${API_BASE_URL}/all-users-except/${
         JSON.parse(localStorage.getItem("user"))._id
       }`
     )
@@ -106,7 +108,7 @@ const PersonalChat = () => {
         createdAt: new Date().toISOString(),
       });
 
-      fetch(`${API_BASE_URL}/api/save-personal-message`, {
+      fetch(`${API_BASE_URL}/save-personal-message`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -129,87 +131,93 @@ const PersonalChat = () => {
     }
   };
 
+  useEffect(() => {
+    if (messageContainerRef.current) {
+      messageContainerRef.current.scrollTop =
+        messageContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   return (
-    <>
-      <div>
-        <div>
+    <div className="container mt-5">
+      <div className="row">
+        <div className="col-md-4 border d-flex flex-column">
           <h2>{username}</h2>
-
-          <div>
-            <div>Click on username to chat with him</div>
+          <div className="d-flex flex-column">
+            <div>Click on username to chat with them</div>
             {users.map((user) => (
-              <>
-                <p
-                  key={user._id}
-                  onClick={() => {
-                    handleUserSelection(user);
-                  }}
-                >
-                  {user.name}
-                </p>
-              </>
-            ))}
-            <hr />
-          </div>
-        </div>
-
-        <div>
-          <div>{selectedUser && <p>{selectedUser.name}</p>}</div>
-
-          <div>
-            {messages.map((message, index) => (
-              <>
-                {message.sender_id === userid ? (
-                  <>
-                    <div>
-                      <p key={index}>
-                        <div>{message.message}</div>
-                        <span>
-                          {new Date(message.createdAt).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}
-                        </span>
-                      </p>
-                    </div>
-                  </>
-                ) : (
-                  <>
-                    <div>
-                      <p key={index}>
-                        <p>{message.message}</p>
-
-                        <p>
-                          {new Date(message.createdAt).toLocaleTimeString([], {
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            hour12: true,
-                          })}
-                        </p>
-                      </p>
-                    </div>
-                  </>
-                )}
-              </>
+              <button
+                key={user._id}
+                onClick={() => {
+                  handleUserSelection(user);
+                }}
+                className={`user-item btn btn-light btn-block ${
+                  selectedUser && selectedUser._id === user._id ? "active" : ""
+                }`}
+              >
+                {user.name}
+              </button>
             ))}
           </div>
-
-          <div>
-            <input
-              placeholder="Type your message here.."
-              type="text"
-              value={inputValue}
-              onChange={handleInputChange}
-            />
-
-            <button onClick={sendPersonalMessage} disabled={!selectedUser}>
-              Send
-            </button>
-          </div>
         </div>
+        <div className="col-md-8 border d-flex flex-column">
+  {selectedUser && (
+    <>
+      <div className="d-flex align-items-center">
+        <h3>{selectedUser.name}</h3>
+        <p className={`role ${selectedUser.role === 'user' ? 'blue' : selectedUser.role === 'admin' ? 'red' : 'green'}`}>{selectedUser.role}</p>
+      </div>
+      <div
+        className="message-container overflow-auto"
+        ref={messageContainerRef}
+        style={{ flex: 1, maxHeight: "400px" }}
+      >
+        {messages.map((message, index) => (
+          <div
+            key={index}
+            className={`message-item ${
+              message.sender_id === userid ? "sent" : "received"
+            }`}
+          >
+            <div
+              className={`message-container ${
+                message.sender_id === userid ? "sent" : "received"
+              }`}
+            >
+              <div className="message-content">{message.message}</div>
+              <div className="message-time">
+                {new Date(message.createdAt).toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="d-flex">
+        <input
+          placeholder="Type your message here.."
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          className="form-control"
+        />
+        <button
+          onClick={sendPersonalMessage}
+          disabled={!selectedUser}
+          className="btn btn-primary ml-2 align-self-end"
+        >
+          Send
+        </button>
       </div>
     </>
+  )}
+</div>
+
+      </div>
+    </div>
   );
 };
 
