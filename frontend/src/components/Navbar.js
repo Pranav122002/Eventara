@@ -42,7 +42,7 @@ export default function Navbar(props) {
 
               <NavLink
                 to="/analytics"
-                className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
               >
                 <img className="h-8 m-3" src="./store.png" alt="" />
                 <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
@@ -51,7 +51,7 @@ export default function Navbar(props) {
               </NavLink>
               <NavLink
                   to="/events"
-                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                  className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
 
                 >
                   <img className="h-7 m-3 " src="./event.png" alt="" />
@@ -61,7 +61,7 @@ export default function Navbar(props) {
                 </NavLink>
               <NavLink
                   to="/venue"
-                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                  className="w-11/12  no-underline  ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
 
                 >
                   <img className="h-7 m-3 " src="./event.png" alt="" />
@@ -96,9 +96,9 @@ export default function Navbar(props) {
                   className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
 
                 >
-                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <img className="h-7 m-3 " src="./Home.png" alt="" />
                   <h1 className="font-Danc text-xl text-gray-700  pt-3 pb-3  font-medium ">
-                    Events
+                    Home
                   </h1>
                 </NavLink>
                 <NavLink

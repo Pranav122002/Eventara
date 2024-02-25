@@ -39,15 +39,15 @@ const venueAvailability = [
 
 function VenueAvailability() {
   return (
-    <div className="venue-grid">
+    <div className="venue-gri mt-10 w-4/6 ml-[25rem]">
       {venues.map((venue) => (
-        <div key={venue.id} className="venue">
-          <h3>{venue.name}</h3>
-          <div className="room-grid">
+        <div key={venue.id} className="venue mt-10 ">
+          <h3 className='text-left text-xl'>{venue.name}</h3>
+          <div className="room-grid h-12">
             {venue.rooms.map((room) => {
               const availability = venueAvailability.find((v) => v.roomId === room && v.venueId === venue.id);
               return (
-                <div key={room} className={`room ${availability.available ? 'available' : 'occupied'}`}>
+                <div key={room} className={`room rounded-md pt-2 ${availability.available ? 'available' : 'occupied'}`}>
                   {room}
                 </div>
               );

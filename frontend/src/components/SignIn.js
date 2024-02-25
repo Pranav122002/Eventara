@@ -51,11 +51,39 @@ export default function SignIn() {
       <div className="m-32 flex justify-content-center">
         <div className="relative">
           <img src="./iphone.png" className="h-[40rem]" alt="" />
-          <div className="absolute top-0 h-[30rem] ml-[31.2%] mt-[13%] overflow-hidden">
-            <img className="w-60 mt-3 scrollanim  rounded-lg" src="./event-1.jpg" alt="" />
-          
-            <img className="w-60 mt-3 scrollanim  rounded-lg" src="./event-3.jpg" alt="" />
-            <img className="w-60 mt-3 scrollanim  rounded-lg" src="./event-2.jpg" alt="" />
+          <div className="absolute top-0 h-[30rem] ml-[31.2%] mt-[13%] overflow-hidden rounded-md">
+            <div className=" scrollanim ">
+              <img
+                className="w-60 mt-3 rounded-lg"
+                src="./event-1.jpg"
+                alt=""
+              />
+              <div className="flex mt-2">
+                <img className="h-5 ml-2" src="./share.png" alt="" />
+                <img className="h-5 ml-2"  src="./comment.png" alt="" />
+              </div>
+            </div>
+            <div className=" scrollanim ">
+              <img
+                className="w-60 mt-3 rounded-lg"
+                src="./event-3.jpg"
+                alt=""
+              />
+              <div className="flex mt-2">
+                <img className="h-5 ml-2" src="./share.png" alt="" />
+                <img className="h-5 ml-2"  src="./comment.png" alt="" />
+              </div>
+            </div> <div className=" scrollanim ">
+              <img
+                className="w-60 mt-3 rounded-lg"
+                src="./event-1.jpg"
+                alt=""
+              />
+              <div className="flex mt-2">
+                <img className="h-5 ml-2" src="./share.png" alt="" />
+                <img className="h-5 ml-2"  src="./comment.png" alt="" />
+              </div>
+            </div>
           </div>
         </div>
         <div className="-ml-32 w-96 relative z-909">
