@@ -1,29 +1,26 @@
 const mongoose = require('mongoose')
 
 const eventSchema = mongoose.Schema({
-    title: {
+    name: {
         type: String,
-        required: true
     },
     description: {
         type: String,
-        required: true
     },
     img: {
         type: String,
     },
     date: {
         type: Date,
-        required: true
+
     },
     location: {
         type: String,
-        required: true
     },
-    rooms:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref:"ROOM"
-    }],
+    bookings:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'BOOKING'
+    },
     approvals: [
         {
             user: {
@@ -36,7 +33,11 @@ const eventSchema = mongoose.Schema({
                 default: 'pending'
             }
         }
-    ]
+    ],
+    organizer:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'COMMITTEE'
+    }
 })
 
 module.exports = mongoose.model('EVENT', eventSchema)

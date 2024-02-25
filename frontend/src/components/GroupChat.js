@@ -3,9 +3,7 @@ import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
+import { API_BASE_URL } from "../config";
 const socket = io(`${API_BASE_URL}`);
 
 export default function GroupChat() {
@@ -25,9 +23,7 @@ export default function GroupChat() {
       navigate("/signin");
     } else {
       fetch(
-        `${API_BASE_URL}/api/user/${
-          JSON.parse(localStorage.getItem("user"))._id
-        }`,
+        `${API_BASE_URL}/user/${JSON.parse(localStorage.getItem("user"))._id}`,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -44,7 +40,7 @@ export default function GroupChat() {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/api/all-group-messages`)
+    fetch(`${API_BASE_URL}/all-group-messages`)
       .then((response) => response.json())
       .then((data) => {
         setMessages(data);
@@ -75,7 +71,7 @@ export default function GroupChat() {
       createdAt: new Date().toISOString(),
     });
 
-    fetch(`${API_BASE_URL}/api/save-group-message`, {
+    fetch(`${API_BASE_URL}/save-group-message`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

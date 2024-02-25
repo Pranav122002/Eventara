@@ -18,12 +18,16 @@ require("./models/user");
 require("./models/group_message");
 require("./models/personal_message");
 require("./models/committee");
-
+require("./models/bookings")
+require("./models/rooms")
+require("./models/Event")
 
 app.use(require("./routes/user"));
 app.use(require("./routes/auth"));
 app.use(require("./routes/message"));
 app.use(require("./routes/committee"));
+app.use(require("./routes/events"));
+app.use(require("./routes/booking"));
 
 mongoose.connect(MONGOURI, { useNewUrlParser: true, useUnifiedTopology: true });
 
