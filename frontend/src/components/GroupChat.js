@@ -3,9 +3,7 @@ import io from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
-
+import { API_BASE_URL } from "../config";
 const socket = io(`${API_BASE_URL}`);
 
 export default function GroupChat() {
