@@ -234,7 +234,10 @@ const CommitteeForm = () => {
 
                 {/* Add other form fields as per your model */}
 
-                <Button variant="primary" onClick={handleModalOpen} className='mt-3' >
+                <Button
+                    variant="primary"
+                    onClick={handleModalOpen}
+                    className="mt-3 bg-green-500">
                     Next
                 </Button>
             </Form>
@@ -265,7 +268,7 @@ const CommitteeForm = () => {
             </Modal>
             {/* separate section to get all the committes that the user created */}
             <Container className='mt-3'>
-                <h2>My Committees</h2>
+                <h2  className="text-left text-2xl">My Committees</h2>
                 <Row xs={1} md={2} lg={3} className="g-4">
                     {myCommittees?.map((committee, index) => (
                         <Col key={committee._id}>

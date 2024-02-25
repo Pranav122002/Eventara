@@ -6,14 +6,18 @@ const sendWhatsAppMessage = require('./sendWhatsAppMessage')
 const {uploadPDF} = require('./uploadPDF')
 // Function to generate PDF from Committee document
 async function generatePDFFromCommittee(committee, recipient_number, isEvent) {
+    console.log(committee)
     try {
         // Read HTML template file
         let isEvent_Com
         let htmlTemplatePath 
+        let eventName
         if(!isEvent){
             isEvent_Com = "Committee"
+            eventName = committee.committee_name
             htmlTemplatePath = path.join(__dirname, 'committee_template2.html');
         } else {
+            eventName = committee.name
             isEvent_Com = "Event"
             htmlTemplatePath = path.join(__dirname, 'event_template2.html');
         }
@@ -43,7 +47,7 @@ async function generatePDFFromCommittee(committee, recipient_number, isEvent) {
         const pdfurl = await uploadPDF(pdfFilePath)
         console.log(pdfurl.url)
         
-        const message = `Dear admin, a new ${isEvent_Com}, ${committee.committee_name}, needs your approval. Please read the details about the ${isEvent_Com} and approve it.`;
+        const message = `Dear admin, a new ${isEvent_Com}, ${eventName}, needs your approval. Please read the details about the ${isEvent_Com} and approve it.`;
         await sendWhatsAppMessage(recipient_number, message, pdfurl.url);
 
         console.log("PDF sent via WhatsApp successfully.");

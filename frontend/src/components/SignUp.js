@@ -59,11 +59,45 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="m-32 flex justify-content-center">
-        <div>
+       <div className="m-32 flex justify-content-center">
+        <div className="relative">
           <img src="./iphone.png" className="h-[40rem]" alt="" />
+          <div className="absolute top-0 h-[30rem] ml-[31.2%] mt-[13%] overflow-hidden rounded-md">
+            <div className=" scrollanim ">
+              <img
+                className="w-60 mt-3 rounded-lg"
+                src="./event-1.jpg"
+                alt=""
+              />
+              <div className="flex mt-2">
+                <img className="h-5 ml-2" src="./share.png" alt="" />
+                <img className="h-5 ml-2"  src="./comment.png" alt="" />
+              </div>
+            </div>
+            <div className=" scrollanim ">
+              <img
+                className="w-60 mt-3 rounded-lg"
+                src="./event-3.jpg"
+                alt=""
+              />
+              <div className="flex mt-2">
+                <img className="h-5 ml-2" src="./share.png" alt="" />
+                <img className="h-5 ml-2"  src="./comment.png" alt="" />
+              </div>
+            </div> <div className=" scrollanim ">
+              <img
+                className="w-60 mt-3 rounded-lg"
+                src="./event-1.jpg"
+                alt=""
+              />
+              <div className="flex mt-2">
+                <img className="h-5 ml-2" src="./share.png" alt="" />
+                <img className="h-5 ml-2"  src="./comment.png" alt="" />
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="-ml-32 w-96">
+        <div className="-ml-32 w-96 relative z-909">
           <div className=" p-6 pt-1 border-2 mt-10 rounded-none ">
             <h1 className="font-Danc text-4xl italic text-gray-700 text-center mt-3 ">
               Eventara

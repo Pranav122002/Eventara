@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const eventSchema = mongoose.Schema({
-    title: {
+    name: {
         type: String,
     },
     description: {

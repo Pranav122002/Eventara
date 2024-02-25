@@ -9,19 +9,20 @@ router.post('/api/create-event', async (req, res) => {
         try {    
             const isEvent = true
             var event_info = req.body.eventFormData;
-            console.log(event_info)
+            // console.log(event_info.event_name)
             const name = event_info.event_name
             const date = event_info.event_date
             const location = event_info.event_venue
             const time = event_info.event_time
             event_info = {name, date, time, location  }
+            
             const approvals = req.body.selectedAdmins?.map(adminId => ({
                 user: adminId,
                 status: 'pending'
             }));
     
             event_info.approvals = approvals
-            console.log(event_info.organizer)
+            // console.log(event_info.organizer)
             const event = new EVENT(event_info);
     
             const newevent = await event.save();
@@ -42,8 +43,8 @@ router.post('/api/create-event', async (req, res) => {
     
     
             // console.log(newCommittee)
-            console.log(updatedAdmin)
-            res.status(201).json(newCommittee);
+            // console.log(updatedAdmin)
+            res.status(201).json(newevent);
         } catch (err) {
             console.log(err)
             res.status(400).json({ message: err.message });
