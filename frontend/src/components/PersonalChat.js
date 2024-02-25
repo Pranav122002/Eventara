@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/PersonalChat.css";
 
-const BASE_URL = process.env.REACT_APP_BASE_URL;
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
+const BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "http://localhost:5000/api";
 const socket = io(`${BASE_URL}`);
 
 const PersonalChat = () => {
@@ -139,85 +139,107 @@ const PersonalChat = () => {
   }, [messages]);
 
   return (
-    <div className="container mt-5">
-      <div className="row">
-        <div className="col-md-4 border d-flex flex-column">
-          <h2>{username}</h2>
-          <div className="d-flex flex-column">
-            <div>Click on username to chat with them</div>
-            {users.map((user) => (
-              <button
-                key={user._id}
-                onClick={() => {
-                  handleUserSelection(user);
-                }}
-                className={`user-item btn btn-light btn-block ${
-                  selectedUser && selectedUser._id === user._id ? "active" : ""
-                }`}
-              >
-                {user.name}
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="col-md-8 border d-flex flex-column">
-  {selectedUser && (
     <>
-      <div className="d-flex align-items-center">
-        <h3>{selectedUser.name}</h3>
-        <p className={`role ${selectedUser.role === 'user' ? 'blue' : selectedUser.role === 'admin' ? 'red' : 'green'}`}>{selectedUser.role}</p>
-      </div>
-      <div
-        className="message-container overflow-auto"
-        ref={messageContainerRef}
-        style={{ flex: 1, maxHeight: "400px" }}
-      >
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`message-item ${
-              message.sender_id === userid ? "sent" : "received"
-            }`}
-          >
-            <div
-              className={`message-container ${
-                message.sender_id === userid ? "sent" : "received"
-              }`}
-            >
-              <div className="message-content">{message.message}</div>
-              <div className="message-time">
-                {new Date(message.createdAt).toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
+      <div className="ml-[30rem]">
+        <div className="contain mt-5 w-5/6">
+          <div className="row h-[35rem]">
+            <div className="col-md-4 border d-flex flex-column">
+              <div className="flex p-2">
+                <img className="w-10" src="./profile.png" alt="" />
+              <h2 className="text-xl ml-3 pt-1 text-left ">{username}</h2>
+              </div>
+              <div className="d-flex flex-column text-left">
+                {users.map((user) => (
+                  <button
+                    key={user._id}
+                    onClick={() => {
+                      handleUserSelection(user);
+                    }}
+                    className={`user-item btn text-left w-full btn-light btn-block ${
+                      selectedUser && selectedUser._id === user._id
+                        ? "active"
+                        : ""
+                    }`}
+                  >
+                    {user.name}
+                  </button>
+                ))}
               </div>
             </div>
+            <div className="col-md-8 border d-flex flex-column">
+              {selectedUser && (
+                <>
+                  <div  className="d-flex align-items-center">
+                    <h3 className="text-xl p-2">{selectedUser.name}</h3>
+                    <p
+                      className={`role ${
+                        selectedUser.role === "user"
+                          ? "blue"
+                          : selectedUser.role === "admin"
+                          ? "red"
+                          : "green"
+                      }`}
+                    >
+                      {selectedUser.role}
+                    </p>
+                  </div>
+                  <div
+                    className="message-container overflow-auto"
+                    ref={messageContainerRef}
+                    style={{ flex: 1, maxHeight: "400px" }}
+                  >
+                    {messages.map((message, index) => (
+                      <div
+                        key={index}
+                        className={`message-item ${
+                          message.sender_id === userid ? "sent" : "received"
+                        }`}
+                      >
+                        <div
+                          className={`message-container ${
+                            message.sender_id === userid ? "sent" : "received"
+                          }`}
+                        >
+                          <div className="message-content">
+                            {message.message}
+                          </div>
+                          <div className="message-time">
+                            {new Date(message.createdAt).toLocaleTimeString(
+                              [],
+                              {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                hour12: true,
+                              }
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="d-flex">
+                    <input
+                      placeholder="Type your message here.."
+                      type="text"
+                      value={inputValue}
+                      onChange={handleInputChange}
+                      className="form-control"
+                    />
+                    <button
+                      onClick={sendPersonalMessage}
+                      disabled={!selectedUser}
+                      className="btn btn-primary ml-2 align-self-end"
+                    >
+                      Send
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
-        ))}
-      </div>
-      <div className="d-flex">
-        <input
-          placeholder="Type your message here.."
-          type="text"
-          value={inputValue}
-          onChange={handleInputChange}
-          className="form-control"
-        />
-        <button
-          onClick={sendPersonalMessage}
-          disabled={!selectedUser}
-          className="btn btn-primary ml-2 align-self-end"
-        >
-          Send
-        </button>
+        </div>
       </div>
     </>
-  )}
-</div>
-
-      </div>
-    </div>
   );
 };
 

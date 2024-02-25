@@ -15,6 +15,7 @@ const initialEvents = [
     venue: "Auditorium",
     mode: "Offline",
     imageSrc: "./event-1.jpg",
+    eventUrl: "https://forms.gle/wX4JynrK1xXoZGTi9",
   },
   {
     id: 2,
@@ -24,6 +25,7 @@ const initialEvents = [
     venue: "Open Air Theatre",
     mode: "Offline",
     imageSrc: "./event-2.jpg",
+    eventUrl: "https://agnethonfcrit.devfolio.co/",
   },
   {
     id: 3,
@@ -116,18 +118,19 @@ function EventList() {
     };
 
     return (
-      <div>
+      <div className="w-full">
         {comments.map((comment, index) => (
           <div key={index}>{comment}</div>
         ))}
         <div>
           <input
+            className="w-[70%] bg-gray-200 p-1 rounded-md"
             type="text"
             placeholder="Add a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />
-          <button onClick={handleAddComment}>Add Comment</button>
+          <button className="ml-10 bg-blue-500 p-1  rounded md text-white" onClick={handleAddComment}>send</button>
         </div>
       </div>
     );
@@ -154,22 +157,39 @@ function EventList() {
                         className="card-i w-5/6 mx-auto"
                         alt={event.name}
                       />
-                      <div className="flex ml-16 mt-2">
-                        <img className="w-8" src="./send.png" alt="" />
-                        <img className="w-8 ml-5 " onClick={() => handleCommentImageClick(event.id)} src="./comment.png" alt="" />
+                      <div className="flex  justify-between ml-16 w-5/6 mt-2">
+                        <div className="flex">
+                          <img className="h-8" src="./send.png" alt="" />
+                          <img
+                            className="h-8 ml-5 "
+                            onClick={() => handleCommentImageClick(event.id)}
+                            src="./comment.png"
+                            alt=""
+                          />
+                        </div>
+                        <div
+                          className="text-white text-md bg-blue-500 p-2 rounded-lg "
+                          onClick={() =>
+                            (window.location.href = event.eventUrl)
+                          }
+                        >
+                          Participate
+                        </div>
                       </div>
+                      <div className="text-left ml-16 pt-2">
                       {expandedComments.includes(event.id) && (
                         <CommentSection
                           eventId={event.id}
                           comments={eventComments[event.id] || []}
                           onAddComment={(eventId, updatedComments) => {
                             setEventComments({
-                              ...eventComments,
+                              ...eventComments, 
                               [eventId]: updatedComments,
                             });
                           }}
                         />
                       )}
+                      </div>
                       <div>
                         <h2 className="text-xl text-left text-gray-600  ml-16 mt-3">
                           {event.name}
@@ -204,9 +224,8 @@ function EventList() {
                         </Button>
                       )}
                     </div>
-                    <hr className="w-5/6 mx-auto" />  
+                    <hr className="w-5/6 mx-auto" />
                   </div>
-                  
                 ))}
               </div>
               <div className="border-l-2 mr-40 pl-10 w-60 ">

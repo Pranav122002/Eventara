@@ -70,13 +70,23 @@ export default function Navbar(props) {
                   </h1>
                 </NavLink>
                 <NavLink
-                  to="/Chat"
-                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                  to="/personal-chat"
+                  className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
 
                 >
-                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <img className="h-10 m-3 " src="./conversation.png" alt="" />
                   <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
-                    Chat
+                  Personal Chat
+                  </h1>
+                </NavLink>
+                <NavLink
+                  to="/group-chat"
+                  className="w-11/12 ml-3 no-underline flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-10 m-3 " src="./group.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                  Global Chat
                   </h1>
                 </NavLink>
               <div
@@ -113,13 +123,23 @@ export default function Navbar(props) {
                 </NavLink>
 
                 <NavLink
-                  to="/Chat"
-                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                  to="/personal-chat"
+                  className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
 
                 >
-                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <img className="h-10 m-3 " src="./conversation.png" alt="" />
                   <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
-                    Chat
+                  Personal Chat
+                  </h1>
+                </NavLink>
+                <NavLink
+                  to="/group-chat"
+                  className="w-11/12 ml-3 no-underline flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-10 m-3 " src="./group.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                  Global Chat
                   </h1>
                 </NavLink>
                 <NavLink
