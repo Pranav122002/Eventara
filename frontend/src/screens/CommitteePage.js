@@ -1,17 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, ButtonGroup } from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
+import React, { useState, useEffect } from "react";
+import { Container, Row, Col, Card, ButtonGroup } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 import { toast } from "react-toastify";
 
-
-import { API_BASE_URL } from '../config';
+import { API_BASE_URL } from "../config";
 
 const CommitteePage = () => {
-  const user = JSON.parse(localStorage.getItem('user'))
+  const user = JSON.parse(localStorage.getItem("user"));
   const [committees, setCommittees] = useState([]);
   const notifyA = (msg) => toast.error(msg);
   const notifyB = (msg) => toast.success(msg);
-  
+  const [searchQuery, setSearchQuery] = useState("");
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+  const filteredCommittees = committees.filter((committee) =>
+    committee?.committee_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
   const handleSubscribe = async (committee_id) => {
     try {
       // Send subscription request
@@ -22,8 +27,8 @@ const CommitteePage = () => {
         },
         body: JSON.stringify({
           user_id: user._id,
-          committee_id: committee_id
-        })
+          committee_id: committee_id,
+        }),
       });
 
       if (res.ok) {
@@ -40,15 +45,9 @@ const CommitteePage = () => {
     }
   };
 
-  const handleEvents = () => {
-
-  }
-  const handleBecomeMember = () => {
-
-  }
-  const handleChat = () => {
-
-  }
+  const handleEvents = () => {};
+  const handleBecomeMember = () => {};
+  const handleChat = () => {};
   useEffect(() => {
     fetchCommittees();
   }, []);
@@ -59,37 +58,61 @@ const CommitteePage = () => {
       const data = await response.json();
       setCommittees(data);
     } catch (error) {
-      console.error('Error fetching committees:', error);
+      console.error("Error fetching committees:", error);
     }
   };
 
   return (
-    <Container>
-      <h1 className="mt-4 mb-4">Committees</h1>
-      <Row>
-        {committees.map(committee => (
-          <Col key={committee._id} md={4}>
-            <Card className="mb-4 shadow">
-              <Card.Body>
-                <Card.Title className="mb-2">{committee?.committee_name}</Card.Title>
-                <Card.Text className="mb-3">{committee?.committee_desc}</Card.Text>
-                <ul className="list-unstyled mb-0">
-                  {committee?.tags?.map((tag, index) => (
-                    <li key={index}>{tag}</li>
-                  ))}
-                </ul>
-                <ButtonGroup className="d-flex justify-content-between">
-                  <Button onClick={()=>handleSubscribe(committee._id)}>Subscribe</Button>
-                  <Button onClick={(()=>handleEvents(committee._id))}>Events</Button>
-                  <Button onClick={handleBecomeMember}>Become Member</Button>
-                  <Button onClick={handleChat}>Chat</Button>
-                </ButtonGroup>
-              </Card.Body>
-            </Card>
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <>
+      <div className="ml-[24rem]">
+        <Container>
+          <h1 className="mt-4 mb-4">Committees</h1>
+          <input
+            type="text"
+            placeholder="Search by Committee Name"
+            value={searchQuery}
+            className="w-full pl-4 border-2 h-10 mb-4 rounded-md"
+
+            
+            onChange={handleSearchChange}
+          />
+
+          <Row>
+            {filteredCommittees.map((committee) => (
+              <Col key={committee._id} md={4}>
+                <Card className="mb-4 shadow">
+                  <Card.Body>
+                    <Card.Title className="mb-2">
+                      {committee?.committee_name}
+                    </Card.Title>
+                    <Card.Text className="mb-3">
+                      {committee?.committee_desc}
+                    </Card.Text>
+                    <ul className="list-unstyled mb-0">
+                      {committee?.tags?.map((tag, index) => (
+                        <li key={index}>{tag}</li>
+                      ))}
+                    </ul>
+                    <ButtonGroup className="d-flex justify-content-between">
+                      <Button onClick={() => handleSubscribe(committee._id)}>
+                        Subscribe
+                      </Button>
+                      <Button onClick={() => handleEvents(committee._id)}>
+                        Events
+                      </Button>
+                      <Button onClick={handleBecomeMember}>
+                        Become Member
+                      </Button>
+                      <Button onClick={handleChat}>Chat</Button>
+                    </ButtonGroup>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </div>
+    </>
   );
 };
 
