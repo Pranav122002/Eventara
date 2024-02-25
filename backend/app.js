@@ -8,7 +8,7 @@ const socket = require("socket.io");
 
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;
-const MONGOURI = process.env.MONGOURI;
+MONGOURI="mongodb+srv://collegeme84:nnP9FE85cSvsLsue@cluster0.73rycjp.mongodb.net/"
 
 app.use(cors());
 app.use(express.json());

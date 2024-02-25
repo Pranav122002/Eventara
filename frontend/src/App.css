@@ -1,5 +1,11 @@
 .App {
   text-align: center;
+  
+}
+.vnavbarr{
+  position: fixed;
+  z-index: 999;
+  
 }
 
 .App-logo {

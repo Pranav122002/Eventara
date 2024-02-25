@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "./UserContext";
-import { Navbar as BootstrapNavbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Navbar as BootstrapNavbar, Nav, NavDropdown } from "react-bootstrap";
 
 export default function Navbar(props) {
   const navigate = useNavigate();
@@ -28,67 +28,95 @@ export default function Navbar(props) {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   user = storedUser;
   return (
-    <div>
+    <div className="p-[0.1rem] " >
       {!["/signup", "/signin", "/", "/about-us"].includes(
         useLocation().pathname
       ) && (
-          <div className={`mainnavss ${props.showvNavbar && "active"} `}>
-            <div className={`navbar ${showVNavbar && "active"}`}>
-              <div className="one" onClick={handleShowVNavbar}>
-                <h1>Services</h1>
-              </div>
-              <div className="two" onClick={props.handleShowvNavbar}>
-                <ul className="nav-menu">
-                  <BootstrapNavbar collapseOnSelect expand="lg">
-                    <BootstrapNavbar.Toggle aria-controls="responsive-navbar-nav" />
-                    <BootstrapNavbar.Collapse id="responsive-navbar-nav">
-                      <Nav className="mr-auto">
-                        {user?.role === "admin" && (
-                          <>
-                            <Link to="/permit" className="nav-link">
-                              Permit
-                            </Link>
-                            <Link to="/history" className="nav-link">
-                              History
-                            </Link>
-                          </>
-                        )}
-                        {/* {user?.role === "volunteer" && (
-                          <>
-                            <Link to="/volunteer" className="nav-link">
-                              Volunteer
-                            </Link>
-                            <Link to="/chats" className="nav-link">
-                              Chats
-                            </Link>
-                          </>
-                        )} */}
-                        {user?.role === "user" && (
-                          <>
-                            <Link to="/events" className="nav-link">
-                              Events
-                            </Link>
-                            <Link to="/committees" className="nav-link">
-                              Committees
-                            </Link>
-                            <Link to="/create-committee" className="nav-link">
-                              Create Committee
-                            </Link>
-                          </>
-                        )}
-                      </Nav>
-                      <Nav>
-                        <Link to="/signin" className="nav-link" onClick={handleSignOut}>
-                          Sign out
-                        </Link>
-                      </Nav>
-                    </BootstrapNavbar.Collapse>
-                  </BootstrapNavbar>
-                </ul>
+        <>
+          {user?.role === "admin" && (
+            <div className="vnavbarr pt-0 min-w-[18rem] h-screen bg-white border-r-2 ">
+               <div className="flex m-3 p-3 rounded ">
+                  <img src="./lines2.png" className="liness h-7" alt="" />
+                  <h1 className="font-Danc text-3xl italic text-gray-700">Campus Colab</h1>
+                </div>
+
+              <NavLink
+                to="/analytics"
+                className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+              >
+                <img className="h-8 m-3" src="./store.png" alt="" />
+                <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                  Analytics
+                </h1>
+              </NavLink>
+              <div
+                className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
+                onClick={() => {
+                  localStorage.clear();
+                  navigate("/");
+                }}
+              >
+                <img className="h-6 m-3" src="./logout2.png" alt="" />
+                <h1 className="pl-1 pt-3 pb-3 font-medium text-red-500 text-base tracking-tight">
+                  Logout
+                </h1>
               </div>
             </div>
-          </div>
-        )}
+          )}
+          {user?.role === "user" && (
+            <>
+              <div className="vnavbarr pt-0 min-w-[20rem] h-screen bg-white border-r-2 ">
+                <div className="flex m-3 p-3 rounded ">
+                  <img src="./lines2.png" className="liness h-7" alt="" />
+                  <h1 className="font-Danc text-3xl italic text-gray-700">Campus Colab</h1>
+                </div>
+
+                <NavLink
+                  to="/events"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Events
+                  </h1>
+                </NavLink>
+                <NavLink
+                  to="/committees"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                >
+                  <img className="h-8 m-3" src="./people.png" alt="" />
+                  <h1 className="text-xl  text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Committees
+                  </h1>
+                </NavLink>
+                <NavLink
+                  to="/create-committee"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                >
+                  <img className="h-8 m-3" src="./add.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    New Committee
+                  </h1>
+                </NavLink>
+               
+                <div
+                  className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
+                  onClick={() => {
+                    localStorage.clear();
+                    navigate("/");
+                  }}
+                >
+                  <img className="h-6 m-3" src="./logout2.png" alt="" />
+                  <h1 className="pl-1 pt-3 pb-3 font-medium text-red-500 text-base tracking-tight">
+                    Logout
+                  </h1>
+                </div>
+              </div>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Form, Button, Container, Row, Col } from "react-bootstrap";
@@ -44,6 +44,7 @@ export default function SignUp() {
         password: password,
         role: role,
         phone_no: phoneNo,
+        role: role,
       }),
     })
       .then((res) => res.json())
@@ -58,77 +59,100 @@ export default function SignUp() {
   };
 
   return (
-    <Container fluid className="mt-5">
-      <Row className="justify-content-md-center">
-        <Col xs={12} md={6}>
-          <Form>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Group>
+    <>
+      <div className="m-32 flex justify-content-center">
+        <div>
+          <img src="./iphone.png" className="h-[40rem]" alt="" />
+        </div>
+        <div className="-ml-32 w-96">
+          <div className=" p-6 pt-1 border-2 mt-10 rounded-none ">
+            <h1 className="font-Danc text-4xl italic text-gray-700 text-center mt-3 ">
+              Campus Collab
+            </h1>
+            <div className="mt-10 ">
+              <div>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  value={email}
+                  className="mt-2 w-5/6 bg-gray-100 border-1 p-2 rounded-md"
+                  placeholder="Email"
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                  }}
+                />
+              </div>
+              <div>
+                <input
+                  type="text"
+                  name="name"
+                  className="mt-2 w-5/6 bg-gray-100 border-1 p-2 rounded-md"
+                  id="name"
+                  placeholder="Name"
+                  value={name}
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+              </div>
 
-            <Form.Group controlId="formBasicName">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formBasicPhoneNo">
-              <Form.Label>Phone Number</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter phone number"
-                value={phoneNo}
-                onChange={(e) => setPhoneNo(e.target.value)}
-              />
-            </Form.Group>
-
-            <Form.Group controlId="formBasicRole">
-              <Form.Label>Role</Form.Label>
-              <Form.Control
-                as="select"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
+              <div>
+                <input
+                  type="password"
+                  name="password"
+                  className="mt-2 w-5/6 bg-gray-100 border-1 p-2 rounded-md"
+                  id="password"
+                  placeholder="Password"
+                  value={password}
+                  onChange={(e) => {
+                    setPassword(e.target.value);
+                  }}
+                />
+              </div>
+              <div id="roles">
+                <select
+                  required
+                  placeholder="Choose your role"
+                  name="role"
+                  id="role"
+                  value={role}
+                  onChange={(e) => {
+                    setRole(e.target.value);
+                  }}
+                >
+                  <option className="selopt" value="" disabled selected>
+                    Chooose your role{" "}
+                  </option>
+                  <option className="selopt" value="user">
+                    user
+                  </option>
+                  <option className="selopt" value="admin">
+                    admin
+                  </option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                className="mt-4 mb-10 w-5/6 bg-sky-300 text-white  p-2 rounded-md"
+                id="submit-btn"
+                onClick={() => {
+                  postData();
+                }}
               >
-                <option value="user">User</option>
-                <option value="admin">Admin</option>
-              </Form.Control>
-            </Form.Group>
-
-            <Button
-              variant="primary"
-              type="button"
-              onClick={() => postData()}
-              className="mt-3"
-            >
-              Sign Up
-            </Button>
-          </Form>
-
-          <div className="mt-3">
-            Have an account? <Link to="/signin">Sign in</Link>
+                Sign Up
+              </button>
+            </div>
           </div>
-        </Col>
-      </Row>
-    </Container>
+
+          <div className="p-6 pt-3 border-2 mt-4 rounded-none  text-decoration-none">
+            Already have an account?
+            <Link to="/signin">
+              <span className=" text-decoration-none"> Sign In</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
