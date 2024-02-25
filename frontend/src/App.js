@@ -7,7 +7,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Home from "./screens/Home";
 import Profile from "./screens/Profile";
 import Chat from "./screens/Chat";
-
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import Navbar from "./components/Navbar";
@@ -15,6 +14,8 @@ import UserProfile from "./components/UserProfile";
 import PersonalChat from "./components/PersonalChat";
 import GroupChat from "./components/GroupChat";
 import CommitteePage from "./screens/CommitteePage";
+import Events from "./screens/Events";
+import Venue from "./screens/Venue";
 import CreateCom from "./components/CreateCom"
 import { UserProvider } from "./components/UserContext";
 import Permit from "./components/Permit";
@@ -36,7 +37,8 @@ function App() {
           <Route path="/personal-chat" element={<PersonalChat />}></Route>
           <Route path="/group-chat" element={<GroupChat />}></Route>
           <Route path="/committees" element={<CommitteePage />} ></Route>
-          <Route path="/events" element={<CommitteePage />} ></Route>
+          <Route path="/events" element={<Events />} ></Route>
+          <Route path="/venue" element={<Venue />} ></Route>
           <Route path="/create-committee" element={<CreateCom/>}></Route>
           <Route path="/permit" element={<Permit/>}></Route>
           <Route></Route>

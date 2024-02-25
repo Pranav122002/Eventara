@@ -22,7 +22,7 @@ export default function GroupChat() {
       navigate("/signin");
     } else {
       fetch(
-        `${API_BASE_URL}/user/${JSON.parse(localStorage.getItem("user"))._id}`,
+        `${API_BASE_URL}/api/user/${JSON.parse(localStorage.getItem("user"))._id}`,
         {
           headers: {
             Authorization: "Bearer " + localStorage.getItem("jwt"),
@@ -38,7 +38,7 @@ export default function GroupChat() {
   }, []);
 
   useEffect(() => {
-    fetch(`${API_BASE_URL}/all-group-messages`)
+    fetch(`${API_BASE_URL}/api/all-group-messages`)
       .then((response) => response.json())
       .then((data) => {
         setMessages(data);
@@ -68,7 +68,7 @@ export default function GroupChat() {
       createdAt: new Date().toISOString(),
     });
 
-    fetch(`${API_BASE_URL}/save-group-message`, {
+    fetch(`${API_BASE_URL}/api/save-group-message`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

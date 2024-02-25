@@ -1,0 +1,30 @@
+.venue-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.venue {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+.room-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(50px, 1fr));
+  gap: 5px;
+}
+
+.room {
+  border: 1px solid #ccc;
+  padding: 5px;
+  text-align: center;
+}
+
+.available {
+  background-color: lightgreen;
+}
+
+.occupied {
+  background-color: lightcoral;
+}

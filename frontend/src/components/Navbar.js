@@ -46,9 +46,29 @@ export default function Navbar(props) {
               >
                 <img className="h-8 m-3" src="./store.png" alt="" />
                 <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
-                  Permit
+                  Analytics
                 </h1>
               </NavLink>
+              <NavLink
+                  to="/events"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Events
+                  </h1>
+                </NavLink>
+              <NavLink
+                  to="/venue"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Venue 
+                  </h1>
+                </NavLink>
               <div
                 className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
                 onClick={() => {
@@ -73,17 +93,17 @@ export default function Navbar(props) {
 
                 <NavLink
                   to="/events"
-                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                  className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
 
                 >
                   <img className="h-7 m-3 " src="./event.png" alt="" />
-                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                  <h1 className="font-Danc text-xl text-gray-700  pt-3 pb-3  font-medium ">
                     Events
                   </h1>
                 </NavLink>
                 <NavLink
                   to="/committees"
-                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                  className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
                 >
                   <img className="h-8 m-3" src="./people.png" alt="" />
                   <h1 className="text-xl  text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
@@ -92,7 +112,7 @@ export default function Navbar(props) {
                 </NavLink>
                 <NavLink
                   to="/create-committee"
-                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                  className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
                 >
                   <img className="h-8 m-3" src="./add.png" alt="" />
                   <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">

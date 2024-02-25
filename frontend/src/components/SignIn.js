@@ -49,10 +49,16 @@ export default function SignIn() {
   return (
     <>
       <div className="m-32 flex justify-content-center">
-        <div>
+        <div className="relative">
           <img src="./iphone.png" className="h-[40rem]" alt="" />
+          <div className="absolute top-0 h-[30rem] ml-[31.2%] mt-[13%] overflow-hidden">
+            <img className="w-60 mt-3 scrollanim  rounded-lg" src="./event-1.jpg" alt="" />
+          
+            <img className="w-60 mt-3 scrollanim  rounded-lg" src="./event-3.jpg" alt="" />
+            <img className="w-60 mt-3 scrollanim  rounded-lg" src="./event-2.jpg" alt="" />
+          </div>
         </div>
-        <div className="-ml-32 w-96">
+        <div className="-ml-32 w-96 relative z-909">
           <div className=" p-6 pt-1 border-2 mt-10 rounded-none ">
             <h1 className="font-Danc text-4xl italic text-gray-700 text-center mt-3 ">
               Eventara
