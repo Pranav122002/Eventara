@@ -69,6 +69,16 @@ export default function Navbar(props) {
                     Venue 
                   </h1>
                 </NavLink>
+                <NavLink
+                  to="/Chat"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Chat
+                  </h1>
+                </NavLink>
               <div
                 className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
                 onClick={() => {
@@ -99,6 +109,17 @@ export default function Navbar(props) {
                   <img className="h-7 m-3 " src="./Home.png" alt="" />
                   <h1 className="font-Danc text-xl text-gray-700  pt-3 pb-3  font-medium ">
                     Home
+                  </h1>
+                </NavLink>
+
+                <NavLink
+                  to="/Chat"
+                  className="w-11/12 ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-7 m-3 " src="./event.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Chat
                   </h1>
                 </NavLink>
                 <NavLink

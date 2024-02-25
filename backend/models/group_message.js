@@ -10,6 +10,10 @@ const groupMessageSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    sender_role: {
+      type: String,
+      required: true,
+    },
     sender_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "USER",

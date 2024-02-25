@@ -35,13 +35,14 @@ router.get(
 );
 
 router.post("/api/save-group-message", async (req, res) => {
-  const { message, sender_name, sender_id } = req.body;
+  const { message, sender_name, sender_id, sender_role } = req.body;
 
   try {
     const newMessage = new GROUP_MESSAGE({
       message: message,
       sender_name: sender_name,
       sender_id: sender_id,
+      sender_role: sender_role,
     });
 
     const savedMessage = await newMessage.save();
