@@ -93,7 +93,7 @@ const CommitteeForm = () => {
             console.log(formData);
             setShowModal(false);
             if (res.status === "ok") {
-                // Success toast
+                notifyB("Committee formation Request Sent")
             }
         } catch (err) {
             //failure toast
@@ -119,21 +119,70 @@ const CommitteeForm = () => {
     const [eventTime, setEventTime] = useState("");
     const [eventVenue, setEventVenue] = useState("");
     const [eventMode, setEventMode] = useState("");
+    const [allRooms, setAllRooms] = useState([])
+    const [eventFormData, setEventFormData] = useState({
+        event_name: '',
+        event_date: '',
+        event_time: '',
+        event_venue: '',
+        event_mode: ''
+    });
 
+    const handleEventChange = e => {
+        const { name, value } = e.target;
+        setEventFormData(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
+
+    useEffect(() => {
+        console.log(eventFormData)
+    }, [eventFormData])
+    const fetchAllRooms = async () => {
+        try {
+            var res = await fetch(`${API_BASE_URL}/api/rooms`)
+            res = await res.json()
+            console.log(res)
+            setAllRooms(res)
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const isAdmin = user.role === "admin";
 
     const handleAddEvent = () => {
-        const newEvent = {
-            id: events.length + 1,
-            name: eventName,
-            date: eventDate,
-            time: eventTime,
-            venue: eventVenue,
-            mode: eventMode,
-        };
-        setEvents([...events, newEvent]);
-        setShowAddEventModal(false);
+        setShowModal(true)
+        // setEvents([...events, newEvent]);
+        // setShowAddEventModal(false);
+
     };
+
+    const handleEventSubmit = async(e) =>{
+        try {
+            console.log(eventFormData)
+            console.log('Selected admins:', selectedAdmins);
+            e.preventDefault();
+            const res = await fetch(`${API_BASE_URL}/api/create-event`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    eventFormData,
+                    selectedAdmins
+                }),
+            })
+            // console.log(eventFormData);
+            setShowModal(false);
+            if (res.status === "ok") {
+                notifyB("Event approval Request Sent")
+            }
+        } catch (err) {
+            //failure toast
+        }
+
+    }
 
     const handleDeleteEvent = (id) => {
         const updatedEvents = events.filter((event) => event.id !== id);
@@ -148,6 +197,11 @@ const CommitteeForm = () => {
         fetchAdmin()
         fetchMyCommittees()
         console.log(myCommittees)
+    }, [])
+
+    useEffect(() => {
+        fetchAllRooms()
+        console.log(allRooms)
     }, [])
     return (
         <Container>
@@ -238,46 +292,38 @@ const CommitteeForm = () => {
                                                             <Form.Label>Event Name</Form.Label>
                                                             <Form.Control
                                                                 type="text"
+                                                                name="event_name"
                                                                 placeholder="Enter event name"
-                                                                onChange={(e) => setEventName(e.target.value)}
+                                                                onChange={handleEventChange}
                                                             />
                                                         </Form.Group>
                                                         <Form.Group controlId="eventDate">
                                                             <Form.Label>Event Date</Form.Label>
                                                             <Form.Control
-                                                                type="text"
-                                                                placeholder="Enter event date"
-                                                                onChange={(e) => setEventDate(e.target.value)}
+                                                                type="date"
+                                                                name='event_date'
+                                                                onChange={handleEventChange}
                                                             />
                                                         </Form.Group>
                                                         <Form.Group controlId="eventTime">
                                                             <Form.Label>Event Time</Form.Label>
                                                             <Form.Control
-                                                                type="text"
-                                                                placeholder="Enter event time"
-                                                                onChange={(e) => setEventTime(e.target.value)}
+                                                                type="time"
+                                                                name='event_time'
+                                                                onChange={handleEventChange}
                                                             />
                                                         </Form.Group>
                                                         <Form.Group controlId="eventVenue">
                                                             <Form.Label>Event Venue</Form.Label>
                                                             <Form.Control
                                                                 as="select"
-                                                                onChange={(e) => setEventVenue(e.target.value)}
+                                                                onChange={handleEventChange}
+                                                                name='event_venue'
                                                             >
                                                                 <option value="">Select Venue</option>
-
-                                                                <option value="Room 101">Room 101</option>
-                                                                <option value="Room 103">Room 103</option>
-                                                                <option value="Room 104">Room 104</option>
-                                                                <option value="Room 105">Room 105</option>
-                                                                <option value="Room 201">Room 201</option>
-                                                                <option value="Room 205">Room 205</option>
-                                                                <option value="Room 304">Room 304</option>
-                                                                <option value="Room 305">Room 305</option>
-                                                                <option value="Room 401">Room 401</option>
-                                                                <option value="Room 403">Room 403</option>
-                                                                <option value="Room 404">Room 404</option>
-                                                                <option value="Room 405">Room 405</option>
+                                                                {allRooms.map(room => (
+                                                                    <option key={room._id} value={room.room_no} >{room.room_no}</option>
+                                                                ))}
                                                             </Form.Control>
                                                         </Form.Group>
 
@@ -286,7 +332,8 @@ const CommitteeForm = () => {
                                                             <Form.Control
                                                                 type="text"
                                                                 placeholder="Enter event mode"
-                                                                onChange={(e) => setEventMode(e.target.value)}
+                                                                name='event_mode'
+                                                                onChange={handleEventChange}
                                                             />
                                                         </Form.Group>
                                                     </Form>
@@ -301,6 +348,31 @@ const CommitteeForm = () => {
                                                     <Button variant="primary" onClick={handleAddEvent}>
                                                         Add Event
                                                     </Button>
+                                                    <Modal show={showModal} onHide={handleModalClose}>
+                                                        <Modal.Header closeButton>
+                                                            <Modal.Title>Select Admins for Approval</Modal.Title>
+                                                        </Modal.Header>
+                                                        <Modal.Body>
+                                                            {admins?.map(admin => (
+                                                                <Form.Check
+                                                                    key={admin._id}
+                                                                    type="checkbox"
+                                                                    id={`admin-${admin._id}`}
+                                                                    label={admin.name}
+                                                                    checked={selectedAdmins.includes(admin._id)}
+                                                                    onChange={e => handleAdminCheckboxChange(admin._id, e.target.checked)}
+                                                                />
+                                                            ))}
+                                                        </Modal.Body>
+                                                        <Modal.Footer>
+                                                            <Button variant="secondary" onClick={handleModalClose}>
+                                                                Close
+                                                            </Button>
+                                                            <Button variant="primary" onClick={handleEventSubmit}>
+                                                                Submit
+                                                            </Button>
+                                                        </Modal.Footer>
+                                                    </Modal>
                                                 </Modal.Footer>
                                             </Modal>
                                         </>

@@ -3,22 +3,19 @@ const mongoose = require('mongoose')
 const eventSchema = mongoose.Schema({
     title: {
         type: String,
-        required: true
     },
     description: {
         type: String,
-        required: true
     },
     img: {
         type: String,
     },
     date: {
         type: Date,
-        required: true
+
     },
     location: {
         type: String,
-        required: true
     },
     bookings:{
         type:mongoose.Schema.Types.ObjectId,

@@ -5,10 +5,19 @@ const handlebars = require('handlebars');
 const sendWhatsAppMessage = require('./sendWhatsAppMessage')
 const {uploadPDF} = require('./uploadPDF')
 // Function to generate PDF from Committee document
-async function generatePDFFromCommittee(committee, recipient_number) {
+async function generatePDFFromCommittee(committee, recipient_number, isEvent) {
     try {
         // Read HTML template file
-        const htmlTemplatePath = path.join(__dirname, 'committee_template.html');
+        let isEvent_Com
+        let htmlTemplatePath 
+        if(!isEvent){
+            isEvent_Com = "Committee"
+            htmlTemplatePath = path.join(__dirname, 'committee_template2.html');
+        } else {
+            isEvent_Com = "Event"
+            htmlTemplatePath = path.join(__dirname, 'event_template2.html');
+        }
+
         const htmlTemplate = fs.readFileSync(htmlTemplatePath, 'utf-8');
 
         // Compile HTML template using Handlebars
@@ -33,7 +42,8 @@ async function generatePDFFromCommittee(committee, recipient_number) {
         //upload pdf to cloudinary
         const pdfurl = await uploadPDF(pdfFilePath)
         console.log(pdfurl.url)
-        const message = `Dear admin, a new committee, ${committee.committee_name}, is requested to be formed. Please read the details about the committee and approve it.`;
+        
+        const message = `Dear admin, a new ${isEvent_Com}, ${committee.committee_name}, needs your approval. Please read the details about the ${isEvent_Com} and approve it.`;
         await sendWhatsAppMessage(recipient_number, message, pdfurl.url);
 
         console.log("PDF sent via WhatsApp successfully.");

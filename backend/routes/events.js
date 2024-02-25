@@ -2,15 +2,19 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose')
 const EVENT = mongoose.model('EVENT');
+const ADMIN = mongoose.model('ADMIN')
 const generatePDFFromCommittee = require('../functions/genPDF')
 // Create a new event
 router.post('/api/create-event', async (req, res) => {
-    router.post('/api/create-committee', async (req, res) => {
-        try {
-            var committee_info = req.body.formData;
-            // console.log(committee_info)
-    
-            var event_info = req.body.formData;
+        try {    
+            const isEvent = true
+            var event_info = req.body.eventFormData;
+            console.log(event_info)
+            const name = event_info.event_name
+            const date = event_info.event_date
+            const location = event_info.event_venue
+            const time = event_info.event_time
+            event_info = {name, date, time, location  }
             const approvals = req.body.selectedAdmins?.map(adminId => ({
                 user: adminId,
                 status: 'pending'
@@ -28,7 +32,7 @@ router.post('/api/create-event', async (req, res) => {
                     const admin_update = await ADMIN.findByIdAndUpdate(admin.user, {
                         $push: { 'admin.assigned_events': event._id }
                     }, { new: true })
-                    await generatePDFFromCommittee(event, admin_update.phone_no)
+                    await generatePDFFromCommittee(event, admin_update.phone_no, isEvent)
                 } catch (err) {
                     console.error("Error updating admin:", err);
                 }
@@ -45,8 +49,7 @@ router.post('/api/create-event', async (req, res) => {
             res.status(400).json({ message: err.message });
         }
     });
-    
-});
+
 
 // Get all events
 router.get('/api/events', async (req, res) => {
