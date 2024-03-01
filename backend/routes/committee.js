@@ -65,12 +65,12 @@ router.put('/api/update-committee/:id', async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 });
-
+ 
 router.get('/api/all-committees', async (req, res) => {
     try {
         const committees = await COMMITTEE.find()
-            .populate('members', 'name')
-            .select('committee_desc committee_name')
+            .populate('members','name')
+            .select('committee_desc committee_name committee_image')
         res.json(committees);
     } catch (err) {
         res.status(500).json({ message: err.message });

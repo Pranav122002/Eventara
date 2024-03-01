@@ -3,7 +3,8 @@ import { API_BASE_URL } from '../config';
 import { toast } from "react-toastify";
 import Form from 'react-bootstrap/Form';
 import { Container, Modal, Row, Col, Card, Button } from 'react-bootstrap';
-
+import { CLOUD_NAME } from "../config";
+import { UPLOAD_PRESET } from "../config"; 
 
 
 
@@ -15,7 +16,7 @@ const CommitteeForm = () => {
     const user = JSON.parse(localStorage.getItem('user'))
     const [formData, setFormData] = useState({
         committee_name: '',
-        committee_image: getRandomImageURL(),
+        committee_image: '',
         committee_desc: '',
         committee_head: user._id,
         frequency: '',
@@ -38,12 +39,50 @@ const CommitteeForm = () => {
 
         }
     }
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+
+
+    const handleImageUpload = async (file) => {
+        try {
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', UPLOAD_PRESET);
+
+            // Make a POST request to Cloudinary
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+            const imageUrl = data.secure_url;
+            console.log(imageUrl)
+            // Update the committee_image field in the formData state
+            setFormData((prevState) => ({
+                ...prevState,
+                committee_image: imageUrl,
+            }));
+
+            return imageUrl;
+        } catch (error) {
+            console.error('Error uploading image to Cloudinary:', error);
+            return null;
+        }
+    };
+
+
+    const handleChange = async (e) => {
+        const { name, value, files } = e.target;
+
+        if (name === 'committee_image' && files && files.length > 0) {
+            // Upload the image and get the Cloudinary URL
+            await handleImageUpload(files[0]);
+        } else {
+            // For other form fields
+            setFormData((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
+        }
     };
 
     const handleSubmit = e => {
@@ -51,10 +90,10 @@ const CommitteeForm = () => {
         // Handle form submission (e.g., send data to backend)
         console.log(formData);
     };
-    function getRandomImageURL() {
-        const randomImageNumber = Math.floor(Math.random() * 1000); // Adjust as needed
-        return `https://picsum.photos/200/300?random=${randomImageNumber}`;
-    }
+    // function getRandomImageURL() {
+    //     const randomImageNumber = Math.floor(Math.random() * 1000); // Adjust as needed
+    //     return `https://picsum.photos/200/300?random=${randomImageNumber}`;
+    // }
 
     const [showModal, setShowModal] = useState(false);
     const [selectedAdmins, setSelectedAdmins] = useState([]);
@@ -204,6 +243,10 @@ const CommitteeForm = () => {
         console.log(allRooms)
     }, [])
     return (
+    <>
+    <div className='ml-[20rem]'>
+
+    
         <Container>
             <h1>Create Committee</h1>
             <Form>
@@ -227,6 +270,19 @@ const CommitteeForm = () => {
                         placeholder="Enter committee description"
                         name="committee_desc"
                         value={formData.committee_desc}
+                        onChange={handleChange}
+                        required
+                    />
+                </Form.Group>
+             
+                <Form.Group controlId="committeeImg">
+                    <Form.Label>Committee Image</Form.Label>
+                    <Form.Control
+                        type="file"
+                        
+                        placeholder="Enter committee description"
+                        name="committee_image"
+                        // value={formData.committee_image}
                         onChange={handleChange}
                         required
                     />
@@ -388,6 +444,8 @@ const CommitteeForm = () => {
                 </Row>
             </Container>
         </Container>
+        </div>
+    </>    
     );
 };
 

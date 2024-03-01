@@ -94,6 +94,7 @@ function EventList() {
       const response = await fetch(`${API_BASE_URL}/api/all-committees`);
       const data = await response.json();
       setCommittees(data);
+      console.log(data)
     } catch (error) {
       console.error("Error fetching committees:", error);
     }
@@ -238,8 +239,8 @@ function EventList() {
                       <div className="flex w-[20rem]">
                         <div className="w-16">
                           <img
-                            src="./images.jpg"
-                            className="rounded-full"
+                            src={committee?.committee_image}
+                            className="rounded-full h-16 w-16"
                             alt=""
                           />
                         </div>

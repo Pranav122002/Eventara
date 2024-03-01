@@ -50,8 +50,10 @@ export default function SignIn() {
     <>
       <div className="m-32 flex justify-content-center">
         <div className="relative">
-          <img src="./iphone.png" className="h-[40rem]" alt="" />
-          <div className="absolute top-0 h-[30rem] ml-[31.2%] mt-[13%] overflow-hidden rounded-md">
+          <img src="./iphone.png" className="h-[40rem] relative z-1" alt="" />
+          <img src="./mac.png" className="h-[40rem] -mt-[100%] -ml-[30%] absolute -z-224" alt="" />
+          <div><img className="absolute -ml-[10%] -mt-[74%] h-[18rem]" src="./desk.png" alt="" /></div>
+          <div className="absolute top-0 h-[30rem] ml-[31.2%] z-20 mt-[13%] overflow-hidden rounded-md">
             <div className=" scrollanim ">
               <img
                 className="w-60 mt-3 rounded-lg"
