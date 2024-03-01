@@ -5,7 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../css/PersonalChat.css";
 
 const BASE_URL = "http://localhost:5000";
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL = "http://localhost:5000";
 const socket = io(`${BASE_URL}`);
 
 const PersonalChat = () => {

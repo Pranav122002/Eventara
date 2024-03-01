@@ -21,6 +21,7 @@ The Eventara is an Event Management tool where users can subscribe to committee,
 5. **Venue Availability**
    - Committees can check the availability of rooms and venues to avoid scheduling conflicts and ensure smooth event execution.
 
+## [Video Demo](https://youtu.be/Dv1Qu3aqctQ)
 
 ## Getting Started
 To get started with the Agnethon Event Management System:

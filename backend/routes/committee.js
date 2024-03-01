@@ -6,6 +6,7 @@ const ADMIN = mongoose.model('ADMIN')
 const router = express.Router()
 const generatePDFFromCommittee = require("../functions/genPDF")
 const sendWhatsAppMessage = require('../functions/sendWhatsAppMessage')
+const generatePDFCommittee = require('../functions/generatePDFCommittee')
 router.post('/api/create-committee', async (req, res) => {
     try {
         var committee_info = req.body.formData;
@@ -16,7 +17,10 @@ router.post('/api/create-committee', async (req, res) => {
             user: adminId,
             status: 'pending'
         }));
-
+        console.log(approvals)
+        // const adminWithHighestImp = approvals?.reduce((maxImpAdmin, currentAdmin) => {
+        //     return currentAdmin.imp > maxImpAdmin.imp ? currentAdmin : maxImpAdmin;
+        // }, approvals[0]);
         committee_info.approvals = approvals
         console.log(committee_info.committee_head)
         const committee = new COMMITTEE(committee_info);
@@ -24,22 +28,32 @@ router.post('/api/create-committee', async (req, res) => {
         const newCommittee = await committee.save();
         console.log(newCommittee)
         //push the committee id to admins' assigned_committees.
-        const updatedAdmin = await Promise.all(approvals.map(async (admin) => {
+        const updatedAdmins = await Promise.all(approvals.map(async (admin) => {
             try {
                 const admin_update = await ADMIN.findByIdAndUpdate(admin.user, {
                     $push: { 'admin.assigned_committees': committee._id }
                 }, { new: true })
-                await generatePDFFromCommittee(committee, admin_update.phone_no)
+                console.log()
+                generatePDFCommittee(committee, admin_update.phone_no)
             } catch (err) {
                 console.error("Error updating admin:", err);
             }
 
 
         }))
+        // Find the admin with the highest importance
+        const highestImportanceAdmin = updatedAdmins.reduce((prevAdmin, currentAdmin) => {
+            return prevAdmin.importance > currentAdmin.importance ? prevAdmin : currentAdmin;
+        });
+
+        // Call generatePDFCommittee if the importance of the admin is the highest
+        if (highestImportanceAdmin) {
+            generatePDFCommittee(committee, highestImportanceAdmin.phone_no);
+        }
 
 
         // console.log(newCommittee)
-        console.log(updatedAdmin)
+        console.log(updatedAdmins)
         res.status(201).json(newCommittee);
     } catch (err) {
         console.log(err)

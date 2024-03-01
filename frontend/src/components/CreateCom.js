@@ -6,6 +6,7 @@ import { Container, Modal, Row, Col, Card, Button } from 'react-bootstrap';
 import { CLOUD_NAME } from "../config";
 import { UPLOAD_PRESET } from "../config"; 
 
+import CustomDrop from '../components/CustomDrop'
 
 
 const CommitteeForm = () => {
@@ -242,6 +243,13 @@ const CommitteeForm = () => {
         fetchAllRooms()
         console.log(allRooms)
     }, [])
+
+    const [selectedVenues, setSelectedVenues] = useState([]);
+
+    const handleVenueSelect = (venues) => {
+        setSelectedVenues(venues);
+        // You can perform any additional actions here based on selected venues
+    };
     return (
     <>
     <div className='ml-[20rem]'>
@@ -374,16 +382,14 @@ const CommitteeForm = () => {
                                                         </Form.Group>
                                                         <Form.Group controlId="eventVenue">
                                                             <Form.Label>Event Venue</Form.Label>
-                                                            <Form.Control
-                                                                as="select"
-                                                                onChange={handleEventChange}
-                                                                name='event_venue'
-                                                            >
-                                                                <option value="">Select Venue</option>
-                                                                {allRooms.map(room => (
-                                                                    <option key={room._id} value={room.room_no} >{room.room_no}</option>
-                                                                ))}
-                                                            </Form.Control>
+                                                            <CustomDrop
+                                                                options={allRooms.map(room => room.room_no)} // Assuming allRooms is an array of room objects with a room_no property
+                                                                onSelect={handleVenueSelect}
+                                                            />
+                                                            {/* You can display the selected venues or perform any other action based on selected venues */}
+                                                            <Form.Text className="text-muted">
+                                                                Selected Venues: {selectedVenues.join(', ')}
+                                                            </Form.Text>
                                                         </Form.Group>
 
                                                         <Form.Group controlId="eventMode">
