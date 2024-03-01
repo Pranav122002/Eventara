@@ -148,6 +148,21 @@ export default function SignUp() {
                   }}
                 />
               </div>
+              <div>
+                <input
+                  type="text"
+                  name="Phone"
+                  className="mt-2 w-5/6 bg-gray-100 border-1 p-2 rounded-md"
+                  id="name"
+                  placeholder="Name"
+                  value={phoneNo}
+                  onChange={(e) => {
+                    setPhoneNo(e.target.value);
+                  }}
+                />
+              </div>
+
+
               <div id="roles">
                 <select
                   required
