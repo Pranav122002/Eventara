@@ -85,8 +85,19 @@ export default function Navbar(props) {
                 <img className="h-10 m-3 " src="./group.png" alt="" />
                 <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
                   Global Chat
-                </h1>
-              </NavLink>
+                  </h1>
+                </NavLink>
+
+                <NavLink
+                  to="/signature"
+                  className="w-11/12 ml-3 no-underline flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+
+                >
+                  <img className="h-10 m-3 " src="./group.png" alt="" />
+                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                  Signature
+                  </h1>
+                </NavLink>
               <div
                 className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
                 onClick={() => {
