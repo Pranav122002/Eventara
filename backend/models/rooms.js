@@ -6,6 +6,9 @@ const roomSchema = mongoose.Schema({
     },
     venue: {
         type: String
+    },
+    available :{
+        type : Boolean
     }
 })
 

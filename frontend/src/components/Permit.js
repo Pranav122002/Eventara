@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Table, Button } from "react-bootstrap";
 import { API_BASE_URL } from "../config";
 
 const PermitPage = () => {
@@ -26,13 +26,18 @@ const PermitPage = () => {
       const eventResponse = await fetch(
         `${API_BASE_URL}/api/admin-events/${user._id}`
       );
+      
       const eventData = await eventResponse.json();
-      console.log(eventApprovals.admin.assigned_committees);
-      setEventApprovals(eventApprovals.admin.assigned_committees);
+      console.log(eventData)
+      console.log(eventData?.admin?.assigned_events);
+      setEventApprovals(eventData?.admin?.assigned_events);
     } catch (error) {
       console.error("Error fetching approvals:", error);
     }
   };
+  useEffect(() => {
+    console.log(eventApprovals)
+  }, [eventApprovals]);
 
   const handleCommitteeApproval = async (approvalId, status) => {
     try {
@@ -77,74 +82,104 @@ const PermitPage = () => {
       <div className="ml-[23rem]">
         <Container>
           <h2 className="mt-4 text-2xl text-left mb-4">Committee Approvals</h2>
-          <Row>
-            {committeeApprovals.length > 0 &&
-              committeeApprovals?.map((approval) => (
-                <Col key={approval._id} md={4}>
-                  <Card className="mb-4 shadow">
-                    <Card.Body>
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Sr No</th>
+                <th>Name</th>
+                <th>Response</th>
+              </tr>
+            </thead>
+            <tbody>
+              {committeeApprovals.length > 0 &&
+                committeeApprovals?.map((approval, index) => (
+                  <tr key={approval._id}>
+                    <td className="w-20">{index + 1}</td>
+                    <td>
                       <Card.Title className="mb-2">
                         {approval?.committee_name}
                       </Card.Title>
                       <Card.Text className="mb-3">
                         {approval?.committee_desc}
                       </Card.Text>
+                    </td>
+                    <td className="w-80">
                       <Button
                         variant="success"
                         onClick={() =>
-                          handleCommitteeApproval(approval._id, "accepted")
+                          handleCommitteeApproval(approval._id, 'accepted')
                         }
                       >
                         Approve
                       </Button>
+                      
                       <Button
                         variant="danger"
                         onClick={() =>
-                          handleCommitteeApproval(approval._id, "rejected")
+                          handleCommitteeApproval(approval._id, 'rejected')
                         }
-                        className="ml-5"
+                        className="ml-2"
                       >
                         Reject
                       </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-          </Row>
-          <h2 className="mt-4 mb-4">Event Approvals</h2>
-          <Row>
-            {committeeApprovals.length > 0 &&
-              eventApprovals?.map((approval) => (
-                <Col key={approval._id} md={4}>
-                  <Card className="mb-4 shadow">
-                    <Card.Body>
-                      <Card.Title className="mb-2">
-                        {approval?.event_name}
-                      </Card.Title>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
+
+          <h2 className="mt-4 text-left mb-4">Event Approvals</h2>
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Sr No</th>
+                <th>Name</th>
+                <th>Time</th>
+                <th>Mode</th>
+                <th>Buttons</th>
+                
+              </tr>
+            </thead>
+            <tbody>
+              {eventApprovals.length > 0 &&
+                eventApprovals?.map((approval, index) => (
+                  <tr key={approval._id}>
+                    <td>{index + 1}</td>
+                    <td>
+                      <Card.Title className="mb-2">{approval?.name}</Card.Title>
                       <Card.Text className="mb-3">
                         {approval?.event_desc}
                       </Card.Text>
+                    </td>
+                    <td>
+                    <Card.Text className="mb-3">
+                        {approval?.time}
+                      </Card.Text>
+                    </td>
+                    <td>
+                    <Card.Text className="mb-3">
+                        {approval?.mode}
+                      </Card.Text>
+                    </td>
+                    <td className="w-80">
                       <Button
                         variant="success"
-                        onClick={() =>
-                          handleEventApproval(approval._id, "accepted")
-                        }
+                        onClick={() => handleEventApproval(approval._id, 'accepted')}
                       >
                         Approve
                       </Button>
                       <Button
                         variant="danger"
-                        onClick={() =>
-                          handleEventApproval(approval._id, "rejected")
-                        }
+                        onClick={() => handleEventApproval(approval._id, 'rejected')}
+                        className="ml-2"
                       >
                         Reject
                       </Button>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-          </Row>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </Table>
         </Container>
       </div>
     </>

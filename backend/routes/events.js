@@ -12,9 +12,12 @@ router.post('/api/create-event', async (req, res) => {
             // console.log(event_info.event_name)
             const name = event_info.event_name
             const date = event_info.event_date
-            const location = event_info.event_venue
+            const location = event_info.event_location
             const time = event_info.event_time
-            event_info = {name, date, time, location  }
+            const mode = event_info.event_mode
+            const image = event_info.event_image
+            const register = event_info.event_register
+            event_info = {name, date, time, location ,image ,register ,mode }
             
             const approvals = req.body.selectedAdmins?.map(adminId => ({
                 user: adminId,

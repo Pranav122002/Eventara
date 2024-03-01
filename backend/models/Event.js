@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 
+
 const eventSchema = mongoose.Schema({
     name: {
         type: String,
@@ -7,7 +8,16 @@ const eventSchema = mongoose.Schema({
     description: {
         type: String,
     },
-    img: {
+    image: {
+        type: String,
+    },
+    time: {
+        type: String,
+    },
+    mode : {
+        type: String,
+    },
+    register:{
         type: String,
     },
     date: {
@@ -37,7 +47,8 @@ const eventSchema = mongoose.Schema({
     organizer:{
         type:mongoose.Schema.Types.ObjectId,
         ref:'COMMITTEE'
-    }
+    },
+
 })
 
 module.exports = mongoose.model('EVENT', eventSchema)

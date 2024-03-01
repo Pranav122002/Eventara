@@ -40,6 +40,9 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+.asdas{
+  overflow: hidden;
+}
 
 .App-link {
   color: #61dafb;

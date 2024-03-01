@@ -40,7 +40,7 @@ const initialEvents = [
 
 function EventList() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
-  const [events, setEvents] = useState(initialEvents);
+  const [events, setEvents] = useState([]);
   const [showAddEventModal, setShowAddEventModal] = useState(false);
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
@@ -52,7 +52,9 @@ function EventList() {
   const [searchQuery, setSearchQuery] = useState("");
   const isAdmin = user.role === "admin";
   const [committees, setCommittees] = useState([]);
-  const [expandedEventId, setExpandedEventId] = useState(null);
+  const [expandedEvents, setExpandedEvents] = useState(
+    events.reduce((acc, event) => ({ ...acc, [event.id]: false }), {})
+  );
   const [expandedComments, setExpandedComments] = useState([]);
   const [eventComments, setEventComments] = useState({});
   const handleCommentImageClick = (id) => {
@@ -68,7 +70,10 @@ function EventList() {
     }
   };
   const handleReadMoreClick = (id) => {
-    setExpandedEventId(id === expandedEventId ? null : id);
+    setExpandedEvents((prevExpandedEvents) => ({
+      ...prevExpandedEvents,
+      [id]: !prevExpandedEvents[id],
+    }));
   };
 
   const handleAddEvent = () => {
@@ -87,15 +92,25 @@ function EventList() {
   };
   useEffect(() => {
     fetchCommittees();
+    fetchEvents();
   }, []);
-
+  const fetchEvents = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/events`);
+      const data = await response.json();
+      setEvents(data);
+      console.log(data);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+    }
+  };
   const fetchCommittees = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/all-committees`);
       const data = await response.json();
       setCommittees(data);
-      console.log(data)
-    } catch (error) {
+      console.log(data);
+    } catch (error) { 
       console.error("Error fetching committees:", error);
     }
   };
@@ -104,34 +119,63 @@ function EventList() {
     const updatedEvents = events.filter((event) => event.id !== id);
     setEvents(updatedEvents);
   };
-  const filteredEvents = events.filter((event) =>
-    event.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+//  const filteredEvents = events.filter((event) =>
+//     event.name.toLowerCase().includes(searchQuery.toLowerCase())
+// );
   function CommentSection({ eventId, comments, onAddComment }) {
     const [newComment, setNewComment] = useState("");
 
+    const getCurrentTimestamp = () => {
+      const currentTimestamp = new Date().toLocaleString();
+      return currentTimestamp;
+    };
+
     const handleAddComment = () => {
       if (newComment.trim() !== "") {
-        const updatedComments = [...comments, newComment];
+        const timestamp = getCurrentTimestamp();
+        const updatedComments = [
+          ...comments,
+          { text: newComment, timestamp: timestamp },
+        ];
         onAddComment(eventId, updatedComments);
         setNewComment("");
       }
     };
 
     return (
-      <div className="w-full">
-        {comments.map((comment, index) => (
-          <div key={index}>{comment}</div>
-        ))}
+      <div className=" bg-gray-100 w-11/12 rounded-sm p-4 ">
         <div>
+          {comments.map((comment, index) => (
+            <div
+              className="bg-white w-min max-w-full h-auto p-2 rounded-md mb-2 flex justify-between"
+              key={index}
+            >
+              <div className="h-auto overflow-hidden">
+                <p className="asda ">
+                  {comment.text}
+                </p>
+              </div>
+              <span className="text-gray-400 text-[10px] w-16 text-right mt-auto">
+                {comment.timestamp}
+              </span>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-between w-full ">
           <input
-            className="w-[70%] bg-gray-200 p-1 rounded-md"
+            className="w-[90%] bg-gray-200 p-1 rounded-md"
             type="text"
             placeholder="Add a comment..."
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
           />
-          <button className="ml-10 bg-blue-500 p-1  rounded md text-white" onClick={handleAddComment}>send</button>
+
+          <img
+            src="./send2.png"
+            onClick={handleAddComment}
+            className="w-10"
+            alt=""
+          />
         </div>
       </div>
     );
@@ -150,15 +194,15 @@ function EventList() {
             </Form.Group>
             <div className="flex justify-around ">
               <div className="w-3/6 ">
-                {filteredEvents.map((event) => (
+                {events.map((event) => (
                   <div key={event.id} className="car mb-3">
                     <div className="card-body">
                       <img
-                        src={event.imageSrc}
+                        src={event.image}
                         className="card-i w-5/6 mx-auto"
                         alt={event.name}
                       />
-                      <div className="flex  justify-between ml-16 w-5/6 mt-2">
+                      <div className="flex  justify-between ml-16 w-5/6 mt-2 pr-10">
                         <div className="flex">
                           <img className="h-8" src="./send.png" alt="" />
                           <img
@@ -169,50 +213,48 @@ function EventList() {
                           />
                         </div>
                         <div
-                          className="text-white text-md bg-blue-500 p-2 rounded-lg "
+                          className="text-white text-md bg-blue-500 p-2 cursor-pointer rounded-lg "
                           onClick={() =>
-                            (window.location.href = event.eventUrl)
+                            (window.location.href = event.register)
                           }
                         >
                           Participate
                         </div>
                       </div>
                       <div className="text-left ml-16 pt-2">
-                      {expandedComments.includes(event.id) && (
-                        <CommentSection
-                          eventId={event.id}
-                          comments={eventComments[event.id] || []}
-                          onAddComment={(eventId, updatedComments) => {
-                            setEventComments({
-                              ...eventComments, 
-                              [eventId]: updatedComments,
-                            });
-                          }}
-                        />
-                      )}
+                        {expandedComments.includes(event.id) && (
+                          <CommentSection
+                            eventId={event.id}
+                            comments={eventComments[event.id] || []}
+                            onAddComment={(eventId, updatedComments) => {
+                              setEventComments({
+                                ...eventComments,
+                                [eventId]: updatedComments,
+                              });
+                            }}
+                          />
+                        )}
                       </div>
                       <div>
                         <h2 className="text-xl text-left text-gray-600  ml-16 mt-3">
                           {event.name}
                         </h2>
                         {/* Conditionally render description, date, time, venue, and mode */}
-                        {expandedEventId === event.id ? (
+                        {expandedEvents[event.id] ? (
                           <div className="text-left ml-16">
                             <p className="c">{event.desc}</p>
-                            <p className="c">Date: {event.date}</p>
+                            <p className="c">Date: {new Date(event.date).toLocaleDateString()}</p>
                             <p className="c">Time: {event.time}</p>
-                            <p className="c">Venue: {event.venue}</p>
+                            {/* <p className="c">Venue: {event.venue}</p> */}
                             <p className="c">Mode: {event.mode}</p>
                           </div>
                         ) : null}
                         <button
-                          className="w-full ml-16  text-gray-500 text-left"
-                          onClick={() => handleReadMoreClick(event.id)}
-                        >
-                          {expandedEventId === event.id
-                            ? "Read Less..."
-                            : "Read More..."}
-                        </button>
+                    className="w-full ml-16  text-gray-500 text-left"
+                    onClick={() => handleReadMoreClick(event.id)}
+                  >
+                    {expandedEvents[event.id] ? "Read Less..." : "Read More..."}
+                  </button>
                       </div>
                       {/* Conditionally render "Read More" button */}
 
