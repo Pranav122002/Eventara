@@ -20,6 +20,7 @@ import CreateCom from "./components/CreateCom"
 import { UserProvider } from "./components/UserContext";
 import Permit from "./components/Permit";
 import Signature from "./screens/Signature"
+import HelpBot from "./screens/HelpBot";
 function App() {
   return (
     <BrowserRouter>
@@ -42,6 +43,7 @@ function App() {
           <Route path="/create-committee" element={<CreateCom/>}></Route>
           <Route path="/permit" element={<Permit/>}></Route>
           <Route path="/signature" element={<Signature/>}></Route>
+          <Route path="/help-bot" element={<HelpBot/>}></Route>
           <Route></Route>
         </Routes>
         <ToastContainer />

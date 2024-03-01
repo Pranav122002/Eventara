@@ -89,7 +89,8 @@ function Signature() {
     },[])
     
     return (
-        <Container className="m">
+        <div className="ml-5">
+        <Container>
             <Row>
                 <Col>
                     <div style={{ border: "2px solid black", width: 500, height: 200 }}>
@@ -116,6 +117,7 @@ function Signature() {
                 </Col>
             </Row>
         </Container>
+        </div>
     );
 }
 

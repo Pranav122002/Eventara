@@ -65,7 +65,10 @@ const committeeSchema = mongoose.Schema({
         phone_number: String,
         office_location: String
     },
-    tasks: [String]
+    tasks: [String],
+    pdf: {
+        type: String
+    }
 });
 
 const Committee = mongoose.model('COMMITTEE', committeeSchema);

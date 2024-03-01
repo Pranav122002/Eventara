@@ -3,10 +3,12 @@ const mongoose = require('mongoose')
 const COMMITTEE = mongoose.model('COMMITTEE')
 const USER = mongoose.model('USER')
 const ADMIN = mongoose.model('ADMIN')
+const EVENT = mongoose.model('EVENT')
 const router = express.Router()
 const generatePDFFromCommittee = require("../functions/genPDF")
 const sendWhatsAppMessage = require('../functions/sendWhatsAppMessage')
 const generatePDFCommittee = require('../functions/generatePDFCommittee')
+const updatePDF = require('../functions/updatePDF')
 router.post('/api/create-committee', async (req, res) => {
     try {
         var committee_info = req.body.formData;
@@ -79,11 +81,11 @@ router.put('/api/update-committee/:id', async (req, res) => {
         res.status(400).json({ message: err.message });
     }
 });
- 
+
 router.get('/api/all-committees', async (req, res) => {
     try {
         const committees = await COMMITTEE.find()
-            .populate('members','name')
+            .populate('members', 'name')
             .select('committee_desc committee_name committee_image')
         res.json(committees);
     } catch (err) {
@@ -128,37 +130,46 @@ router.post('/api/committee-approval/:id', async (req, res) => {
     const admin_id = req.body.admin_id
     const status = req.body.status;
 
+    console.log("Committe Approval")
     try {
+        const committee = await COMMITTEE.findById(committee_id);
+        if (!committee) {
+            return res.status(404).json({ message: 'Committee not found' });
+        }
 
-        let updateObj = {
-            $set: {
-                "approvals.$[elem].status": status
-            }
-        };
+        const approvalIndex = committee.approvals.findIndex(approval => approval.user.toString() === admin_id);
+        if (approvalIndex === -1) {
+            return res.status(404).json({ message: 'Approval not found for the user' });
+        }
 
+        committee.approvals[approvalIndex].status = status;
         if (status === 'rejected') {
-            updateObj.$set.approval_status = 'rejected';
+            committee.approval_status = 'rejected';
         }
-
-        const updatedCommittee = await COMMITTEE.findByIdAndUpdate(committee_id, updateObj, {
-            arrayFilters: [{ "elem.user": admin_id }]
-        });
-
-        if (!updatedCommittee) {
-            return res.status(404).json({ message: "Committee not found." });
-        }
+        await committee.save();
+        res.json({ message: 'Approval status updated successfully' });
 
 
-        //delete the committee id after rejecting or accepting 
-        await ADMIN.updateOne(
-            { _id: admin_id },
-            { $pull: { assigned_committees: committee_id } }
-        )
-
-        res.status(200).json({ message: "Committee approval status updated successfully." })
-
+        // delete the committee id after rejecting or accepting 
+        // await ADMIN.findByIdAndUpdate(
+        //     admin_id,
+        //     { $pull: { 'admin.assigned_committees': committee_id } }
+        // )
+        //Update PDF -- Download the PDF, Add the signature and name, again upload and update the sign_url
+        updatePDF(committee_id, admin_id)
     } catch (err) {
+        console.log(err)
+    }
+})
 
+router.get('/api/committee-pdf/:id', async(req , res)=>{
+    const committee_id = req.params.id
+    try {
+        const committee = await COMMITTEE.findById(committee_id)
+        res.status(200).json(committee.pdf)
+    }catch(err){
+        res.status(500).json({message: err})
+        console.log(err)
     }
 })
 
@@ -189,35 +200,53 @@ router.post('/api/event-approval/:id', async (req, res) => {
     }
 });
 
-router.post('/api/whatsapp-committee-approvals', async (req, res) => {
+router.post('/api/whatsapp-approvals', async (req, res) => {
     const data = req.body
-    //parse the data:
-    console.log(data)
-    const [admin_name, obtainedStatus, committee_name] = data.Body.split("\n");
+    let isEvent
+    var [isEvenisCom, com_eve_name, obtainedStatus, admin_name] = data.Body.split("\n");
     const admin_phone = data.From.slice(9);
-    console.log(admin_name, obtainedStatus, committee_name, admin_phone)
-    const admin = await ADMIN.findOne({name: admin_name})
+    obtainedStatus = obtainedStatus.toLowerCase()
+    let data_
+    if (isEvenisCom.toLowerCase() == "event") {
+        data_ = await EVENT.findOne({ name: com_eve_name })
+        isEvent = true
+    } else {
+        data_ = await COMMITTEE.findOne({ committee_name: com_eve_name })
+        isEvent = false
+    }
+    console.log(isEvenisCom)
+    console.log(com_eve_name)
+    console.log(obtainedStatus)
+    console.log(admin_name)
+    console.log(data_)
+
     try {
 
-        const msg = `The ${committee_name} is ${obtainedStatus}`
+        const admin = await ADMIN.findOne({ name: admin_name })
+
+        const msg = `The ${com_eve_name} is ${obtainedStatus}`
         await sendWhatsAppMessage(admin_phone, msg)
 
-        // console.log(admin._id)
-        // const committee = await COMMITTEE.findOne({committee_name: committee_name});
-        // console.log(committee)
-        // if (!committee) {
-        //     return res.status(404).json({ error: "Committee not found" });
-        // }
+        if (!isEvent) {
+            const committee = await COMMITTEE.findOne({ committee_name: committee_name });
+            console.log(committee)
+            if (!committee) {
+                return res.status(404).json({ error: "Committee not found" });
+            }
 
-        // console.log(committee.approvals.find())
-        // const approval = committee.approvals.find(approval => approval.user.toString() === admin._id);
-        // console.log(approval)
-        // if (!approval) {
-        //     return res.status(404).json({ error: "Approval not found" });
-        // }
-        // approval.status = obtainedStatus;
-        // await committee.save();
-        // res.json({ message: "Approval status updated successfully", committee });
+            console.log(committee.approvals.find())
+            const approval = committee.approvals.find(approval => approval.user.toString() === admin._id);
+            console.log(approval)
+            if (!approval) {
+                return res.status(404).json({ error: "Approval not found" });
+            }
+            approval.status = obtainedStatus;
+            await committee.save();
+            res.json({ message: "Approval status updated successfully", committee });
+
+            console.log(committee)
+        }
+        // console.log(admin._id)
 
 
     } catch (err) {

@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { API_BASE_URL } from "../config";
 
 const PermitPage = () => {
+  const admin_id = JSON.parse(localStorage.getItem('user'))._id
   const [committeeApprovals, setCommitteeApprovals] = useState([]);
   const [eventApprovals, setEventApprovals] = useState([]);
 
@@ -27,8 +28,8 @@ const PermitPage = () => {
         `${API_BASE_URL}/api/admin-events/${user._id}`
       );
       const eventData = await eventResponse.json();
-      console.log(eventApprovals.admin.assigned_committees);
-      setEventApprovals(eventApprovals.admin.assigned_committees);
+      console.log(eventApprovals?.admin?.assigned_events);
+      setEventApprovals(eventApprovals.admin?.assigned_events);
     } catch (error) {
       console.error("Error fetching approvals:", error);
     }
@@ -42,7 +43,7 @@ const PermitPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status, admin_id }),
       });
       // Update local state after approval action
       setCommitteeApprovals(
@@ -61,7 +62,7 @@ const PermitPage = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({ status, admin_id }),
       });
       // Update local state after approval action
       setEventApprovals(
@@ -72,6 +73,16 @@ const PermitPage = () => {
     }
   };
 
+  const handleViewPDF = async (_id) => {
+    try {
+        const res = await fetch(`${API_BASE_URL}/api/committee-pdf/${_id}`);
+        const data = await res.json(); 
+        const pdfUrl = data?.pdf; 
+        window.open(pdfUrl, '_blank')
+    } catch (error) {
+        console.error('Error fetching PDF URL:', error);
+    }
+};
   return (
     <>
       <div className="ml-[23rem]">
@@ -89,23 +100,38 @@ const PermitPage = () => {
                       <Card.Text className="mb-3">
                         {approval?.committee_desc}
                       </Card.Text>
-                      <Button
-                        variant="success"
-                        onClick={() =>
-                          handleCommitteeApproval(approval._id, "accepted")
+
+                      {approval.approval_status == 'accepted'?
+                        (<>
+                          <Button
+                            variant="success"
+                            onClick={() =>
+                              handleViewPDF(approval._id)
+                            }
+                          >
+                            View PDF
+                          </Button>
+                        </>) :
+                        approval.approval_status == 'pending' ?
+                        (<> <Button
+                          variant="success"
+                          onClick={() =>
+                            handleCommitteeApproval(approval._id, "accepted")
+                          }
+                        >
+                          Approve
+                        </Button>
+                        <Button
+                          variant="danger"
+                          onClick={() =>
+                            handleCommitteeApproval(approval._id, "rejected")
+                          }
+                          className="ml-5"
+                        >
+                          Reject
+                        </Button></>):(<><p>Rejected</p></>)
                         }
-                      >
-                        Approve
-                      </Button>
-                      <Button
-                        variant="danger"
-                        onClick={() =>
-                          handleCommitteeApproval(approval._id, "rejected")
-                        }
-                        className="ml-5"
-                      >
-                        Reject
-                      </Button>
+
                     </Card.Body>
                   </Card>
                 </Col>
@@ -113,7 +139,7 @@ const PermitPage = () => {
           </Row>
           <h2 className="mt-4 mb-4">Event Approvals</h2>
           <Row>
-            {committeeApprovals.length > 0 &&
+            {eventApprovals?.length > 0 &&
               eventApprovals?.map((approval) => (
                 <Col key={approval._id} md={4}>
                   <Card className="mb-4 shadow">

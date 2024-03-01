@@ -162,6 +162,16 @@ export default function Navbar(props) {
                     Committees
                   </h1>
                 </NavLink>
+
+                <NavLink
+                  to="/help-bot"
+                  className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+                >
+                  <img className="h-8 m-3" src="./people.png" alt="" />
+                  <h1 className="text-xl  text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                    Help Bot
+                  </h1>
+                </NavLink>
                 <NavLink
                   to="/create-committee"
                   className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "

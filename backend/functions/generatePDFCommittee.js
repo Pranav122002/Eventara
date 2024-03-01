@@ -2,7 +2,10 @@ const fs = require('fs');
 const { PDFDocument, rgb } = require('pdf-lib');
 const path = require('path');
 const sendWhatsAppMessage = require('./sendWhatsAppMessage')
-const { uploadPDF } = require('./uploadPDF')
+const { uploadPDF } = require('./uploadPDF');
+const { registerCustomQueryHandler } = require('puppeteer');
+const mongoose = require('mongoose')
+const COMMITTEE = mongoose.model('COMMITTEE')
 
 async function generatePDFCommittee(committee, recipient_number) {
   try {
@@ -50,7 +53,7 @@ async function generatePDFCommittee(committee, recipient_number) {
         color: rgb(0, 0, 0),
       });
     });
-    
+
     // committee?.approvals?.forEach((member, index) => {
     //   page.drawText(`${index + 1}. ${member?.name ?? 'Not available'}`, {
     //     x: 70,
@@ -71,14 +74,20 @@ async function generatePDFCommittee(committee, recipient_number) {
     if (!fs.existsSync(pdfsDirectory)) {
       fs.mkdirSync(pdfsDirectory);
     }
-    const pdfPath = path.join(pdfsDirectory, `${committee.committee_name}_${new Date()}.pdf`);
+    const pdfPath = path.join(pdfsDirectory, `${committee.committee_name}.pdf`);
     const pdfBytes = await pdfDoc.save();
     fs.writeFileSync(pdfPath, pdfBytes);
 
 
     const pdfurl = await uploadPDF(pdfPath)
     console.log(pdfurl.url)
-
+    try {
+      const updatedCommittee = await COMMITTEE.findByIdAndUpdate(committee._id,
+        { $set: { pdf: pdfurl.url } })
+      console.log(updatedCommittee)
+    } catch (err) {
+      throw new Error(err)
+    }
     const message = `Dear admin, a new committee,  ${committee.committee_name}, needs your approval. Please read the details about the committee and approve it.`;
     await sendWhatsAppMessage(recipient_number, message, pdfurl.url);
 

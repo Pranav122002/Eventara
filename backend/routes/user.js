@@ -56,7 +56,7 @@ router.get('/api/admin-events/:id', async (req, res) => {
 
   try {
     const events = await ADMIN.findById(admin_id)
-      .populate('admin.assigned_event');
+      .populate('admin.assigned_events');
     
     res.status(200).json(events);
 
@@ -112,6 +112,8 @@ router.get('/api/admin-signature/:admin_id', async (req, res) => {
     res.status(500).json({ message: err });
   }
 });
+
+router.get('/api/user-event/:user_id')
 
 
 module.exports = router;
