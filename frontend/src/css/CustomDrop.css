@@ -1,0 +1,25 @@
+.dropdown-item {
+    display: flex;
+    align-items: center;
+  }
+  
+  input[type='checkbox'] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  
+  input[type='checkbox']:checked + label {
+    color: green; /* Change color for selected options */
+  }
+  
+  .icon-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .room-icon {
+    margin-left: 10px;
+    color: blue; /* Change color for room icon */
+  }
+  

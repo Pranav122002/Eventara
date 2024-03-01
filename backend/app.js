@@ -5,6 +5,9 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const socket = require("socket.io");
+require('@babel/register')({
+  presets: ['@babel/preset-env', '@babel/preset-react'],
+});
 
 require("dotenv").config();
 const PORT = process.env.PORT || 5000;

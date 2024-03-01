@@ -31,7 +31,10 @@ const adminSchema = mongoose.Schema({
     assigned_events: [{
       type: mongoose.Schema.Types.ObjectId,
       ref: "EVENT"
-    }]
+    }],
+    imp: {
+      type: Number,
+    }
   }
 })
 
