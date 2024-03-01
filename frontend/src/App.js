@@ -5,7 +5,6 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Home from "./screens/Home";
-import Profile from "./screens/Profile";
 import Chat from "./screens/Chat";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
@@ -32,7 +31,6 @@ function App() {
           <Route path="/signup" element={<SignUp />}></Route>
           <Route path="/signin" element={<SignIn />}></Route>
           <Route path="/user/:userid" element={<UserProfile />}></Route>
-          <Route path="/profile" element={<Profile />}></Route>
           <Route path="/chat" element={<Chat />}></Route>
           <Route path="/personal-chat" element={<PersonalChat />}></Route>
           <Route path="/group-chat" element={<GroupChat />}></Route>
