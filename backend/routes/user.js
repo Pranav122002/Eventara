@@ -84,4 +84,34 @@ router.get('/api/admin-committees/:id', async (req, res) => {
   }
 });
 
+router.post('/api/admin-signature', async (req, res) => {
+  const { admin_id, sign_url } = req.body;
+  console.log(req.body)
+  try {
+    const updatedAdmin = await ADMIN.findByIdAndUpdate(admin_id, {
+      $set: { 'admin.signature': sign_url }
+    }, { new: true });
+    console.log(updatedAdmin.admin.signature)
+    res.status(200).json(updatedAdmin);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+router.get('/api/admin-signature/:admin_id', async (req, res) => {
+  const { admin_id } = req.params;
+  try {
+    const admin = await ADMIN.findById(admin_id);
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+    res.json({ signature: admin.admin.signature });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err });
+  }
+});
+
+
 module.exports = router;

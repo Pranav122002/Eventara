@@ -19,7 +19,7 @@ import Venue from "./screens/Venue";
 import CreateCom from "./components/CreateCom"
 import { UserProvider } from "./components/UserContext";
 import Permit from "./components/Permit";
-
+import Signature from "./screens/Signature"
 function App() {
   return (
     <BrowserRouter>
@@ -41,6 +41,7 @@ function App() {
           <Route path="/venue" element={<Venue />} ></Route>
           <Route path="/create-committee" element={<CreateCom/>}></Route>
           <Route path="/permit" element={<Permit/>}></Route>
+          <Route path="/signature" element={<Signature/>}></Route>
           <Route></Route>
         </Routes>
         <ToastContainer />

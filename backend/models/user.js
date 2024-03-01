@@ -34,6 +34,11 @@ const adminSchema = mongoose.Schema({
     }],
     imp: {
       type: Number,
+      default:0
+    },
+    signature: {
+      type: String,
+      default:"http://res.cloudinary.com/dt0cxgzqn/image/upload/v1709315133/images/rjhhgjuwsmicgvaomes6.png"
     }
   }
 })

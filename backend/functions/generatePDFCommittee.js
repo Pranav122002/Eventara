@@ -71,7 +71,7 @@ async function generatePDFCommittee(committee, recipient_number) {
     if (!fs.existsSync(pdfsDirectory)) {
       fs.mkdirSync(pdfsDirectory);
     }
-    const pdfPath = path.join(pdfsDirectory, `${committee.committee_name}.pdf`);
+    const pdfPath = path.join(pdfsDirectory, `${committee.committee_name}_${new Date()}.pdf`);
     const pdfBytes = await pdfDoc.save();
     fs.writeFileSync(pdfPath, pdfBytes);
 
