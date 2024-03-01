@@ -81,7 +81,7 @@ router.get("/api/admin-events/:id", async (req, res) => {
 
   try {
     const events = await ADMIN.findById(admin_id).populate(
-      "admin.assigned_event"
+      "admin.assigned_events"
     );
 
     res.status(200).json(events);

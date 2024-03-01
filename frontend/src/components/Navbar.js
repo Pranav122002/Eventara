@@ -93,7 +93,7 @@ export default function Navbar(props) {
                   className="w-11/12 ml-3 no-underline flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
 
                 >
-                  <img className="h-10 m-3 " src="./group.png" alt="" />
+                  <img className="h-10 m-3 " src="./contract.png" alt="" />
                   <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
                   Signature
                   </h1>
@@ -151,15 +151,7 @@ export default function Navbar(props) {
                   </h1>
                 </NavLink>
 
-                <NavLink
-                  to={`/user/${user._id}`}
-                  className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5"
-                >
-                  <img className="h-8 m-3" src="./group.png" alt="" />
-                  <h1 className="text-xl  text-gray-700  pt-3 pb-3 tracking-tight font-medium">
-                    Profile
-                  </h1>
-                </NavLink>
+               
 
                 <NavLink
                   to="/committees"
@@ -179,14 +171,27 @@ export default function Navbar(props) {
                     New Committee
                   </h1>
                 </NavLink>
-
+            
+                <div>
+                <NavLink
+                  to={`/user/${user._id}`}
+                  className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 absolute bottom-20"
+                >
+                  <img className="h-8 m-3" src="./user.png" alt="" />
+                  <h1 className="text-xl  text-gray-700  pt-3 pb-3 tracking-tight font-medium">
+                    Profile
+                  </h1>
+                </NavLink>
+                </div>
                 <div
+                
                   className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
                   onClick={() => {
                     localStorage.clear();
                     navigate("/");
                   }}
-                >
+                > 
+                
                   <img className="h-6 m-3" src="./logout2.png" alt="" />
                   <h1 className="pl-1 pt-3 pb-3 font-medium text-red-500 text-base tracking-tight">
                     Logout
