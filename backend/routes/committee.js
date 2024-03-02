@@ -149,6 +149,24 @@ router.post('/api/committee-approval/:id', async (req, res) => {
         await committee.save();
         res.json({ message: 'Approval status updated successfully' });
 
+        const pendingApprovals = committee.approvals.filter(approval => approval.status === 'pending');
+        if (pendingApprovals.length === 0) {
+            committee.approval_status = 'accepted';
+            await committee.save();
+        }
+
+        let maxImportance = -Infinity;
+        let adminWithMaxImportance;
+        pendingApprovals.forEach(async approval => {
+            const admin = await ADMIN.findById(approval.user);
+            if (admin && admin.imp > maxImportance) {
+                maxImportance = admin.imp;
+                adminWithMaxImportance = admin;
+            }
+        });
+        if (adminWithMaxImportance) {
+            await sendWhatsAppMessage(adminWithMaxImportance.phone_no, msg,committee.pdf)
+        }
 
         // delete the committee id after rejecting or accepting 
         // await ADMIN.findByIdAndUpdate(

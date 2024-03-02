@@ -1,11 +1,42 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Button } from "react-bootstrap";
 import { API_BASE_URL } from "../config";
+import { Modal } from 'react-bootstrap';
+import { Document, Page, pdfjs } from 'react-pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
+
+
+const PdfModal = ({ pdfUrl, handleClose }) => {
+  const [numPages, setNumPages] = useState(null);
+
+  function onDocumentLoadSuccess({ numPages }) {
+    setNumPages(numPages);
+  }
+  console.log("Hello")
+  console.log(pdfUrl)
+  return (
+    <Modal show={true} onHide={handleClose} size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title>PDF Viewer</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Document file={pdfUrl} onLoadSuccess={onDocumentLoadSuccess}>
+          {Array.from(new Array(numPages), (el, index) => (
+            <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+          ))}
+        </Document>
+      </Modal.Body>
+    </Modal>
+  );
+};
 
 const PermitPage = () => {
   const admin_id = JSON.parse(localStorage.getItem('user'))._id
   const [committeeApprovals, setCommitteeApprovals] = useState([]);
   const [eventApprovals, setEventApprovals] = useState([]);
+  const [pdfUrl, setPdfUrl] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     fetchApprovals();
@@ -29,7 +60,7 @@ const PermitPage = () => {
       );
       const eventData = await eventResponse.json();
       console.log(eventApprovals?.admin?.assigned_events);
-      setEventApprovals(eventApprovals.admin?.assigned_events);
+      setEventApprovals(eventApprovals?.admin?.assigned_events);
     } catch (error) {
       console.error("Error fetching approvals:", error);
     }
@@ -73,12 +104,19 @@ const PermitPage = () => {
     }
   };
 
+  const handleCloseModal = () => {
+    setShowModal(false);
+  }
   const handleViewPDF = async (_id) => {
     try {
         const res = await fetch(`${API_BASE_URL}/api/committee-pdf/${_id}`);
         const data = await res.json(); 
-        const pdfUrl = data?.pdf; 
-        window.open(pdfUrl, '_blank')
+        console.log(data)
+        const pdfUrl = data; 
+        // console.log(data.pdf)
+        window.location.href = pdfUrl
+        // setPdfUrl(pdfUrl);
+        // setShowModal(true);
     } catch (error) {
         console.error('Error fetching PDF URL:', error);
     }
@@ -108,9 +146,13 @@ const PermitPage = () => {
                             onClick={() =>
                               handleViewPDF(approval._id)
                             }
+
                           >
                             View PDF
                           </Button>
+                          {showModal  && pdfUrl && (
+                            <PdfModal pdfUrl={pdfUrl} handleClose={handleCloseModal} />
+                          )}
                         </>) :
                         approval.approval_status == 'pending' ?
                         (<> <Button

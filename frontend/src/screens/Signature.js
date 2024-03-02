@@ -89,14 +89,14 @@ function Signature() {
     },[])
     
     return (
-        <div className="ml-5">
+        <div className="ml-5 mt-10">
         <Container>
             <Row>
-                <Col>
-                    <div style={{ border: "2px solid black", width: 500, height: 200 }}>
+                <Col className="ml-[25rem]">
+                    <div style={{ border: "2px solid black", width: 700, height: 400 }}>
                         {editMode ?
                             <SignatureCanvas
-                                canvasProps={{ width: 500, height: 200, className: 'sigCanvas' }}
+                                canvasProps={{ width: 700, height: 400, className: 'sigCanvas' }}
                                 ref={data => setSign(data)}
                             />
                             :

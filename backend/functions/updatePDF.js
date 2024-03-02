@@ -43,7 +43,7 @@ async function addSignatureToPDF(pdfBuffer, adminId) {
     });
 
     // Add additional information (such as name) if needed on the new page
-    const name = admin.name; // Assuming name is the field storing the admin's name
+    const name = admin.name;
     newPage.drawText(`Name: ${name}`, {
         x: 50,
         y: height - 100,
@@ -72,12 +72,15 @@ async function addSignatureToPDF(pdfBuffer, adminId) {
 // Function to upload and update the PDF URL in COMMITTEE model
 async function uploadAndSavePDF(committeeId, updatedPdfPath) {
     // Code to upload the updated PDF and obtain its URL
-    const absolutePdfPath = path.resolve(updatedPdfPath);
-    const updatedPdfUrl =  await uploadPDF(absolutePdfPath)
-    await COMMITTEE.findByIdAndUpdate(committeeId, { pdf: updatedPdfUrl });
+    try{
+        const absolutePdfPath = path.resolve(updatedPdfPath);
+        const updatedPdfUrl =  await uploadPDF(absolutePdfPath)
+        await COMMITTEE.findByIdAndUpdate(committeeId, { pdf: updatedPdfUrl.url });
+    }catch (err){
+        console.log(err)
+    }
 }
 
-// Usage example
 async function updatePDF(committeeId, adminId) {
     try {
         // Download the PDF from COMMITTEE model
