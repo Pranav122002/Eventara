@@ -11,7 +11,7 @@ import pandas as pd
 app = Flask(__name__)
 CORS(app)
 
-data = pd.read_csv(r"D:\Documents\Luap\Career\Projects\kimchi_Agnethon\kimchiCoders\helpBot\Agnel-hack-data.csv")
+data = pd.read_csv(r"helpBot\Agnel-hack-data.csv")
 
 model_identifier = 'google/tapas-large-finetuned-sqa'
 
