@@ -42,7 +42,6 @@ async function addSignatureToPDF(pdfBuffer, adminId) {
         height: imageSize.height,
     });
 
-    // Add additional information (such as name) if needed on the new page
     const name = admin.name;
     newPage.drawText(`Name: ${name}`, {
         x: 50,

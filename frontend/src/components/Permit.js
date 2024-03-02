@@ -115,8 +115,8 @@ const PermitPage = () => {
         const pdfUrl = data; 
         // console.log(data.pdf)
         window.location.href = pdfUrl
-        // setPdfUrl(pdfUrl);
-        // setShowModal(true);
+        setPdfUrl(pdfUrl);
+        setShowModal(true);
     } catch (error) {
         console.error('Error fetching PDF URL:', error);
     }

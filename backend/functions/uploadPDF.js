@@ -1,10 +1,8 @@
 const cloudinary = require('cloudinary').v2;
-
-// CLOUDINARY_URL=cloudinary://286383261469635:IrWJnnz1Az8705HuVTTIv3M6178@dw3rvn7dh
 cloudinary.config({
-  cloud_name: 'dw3rvn7dh',
-  api_key: '286383261469635',
-  api_secret: 'IrWJnnz1Az8705HuVTTIv3M6178'
+  cloud_name: process.env.cloud_name,
+  api_key: process.env.api_key,
+  api_secret: process.env.api_secret
 });
 
 async function uploadPDF(pdfFilePath) {

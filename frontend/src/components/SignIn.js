@@ -63,6 +63,7 @@ export default function SignIn() {
               <div className="flex mt-2">
                 <img className="h-5 ml-2" src="./share.png" alt="" />
                 <img className="h-5 ml-2"  src="./comment.png" alt="" />
+                <h1 className="text-white text-sm bg-sky-500 rounded-md w-8 ml-auto mr-5">+</h1>
               </div>
             </div>
             <div className=" scrollanim ">
@@ -74,6 +75,7 @@ export default function SignIn() {
               <div className="flex mt-2">
                 <img className="h-5 ml-2" src="./share.png" alt="" />
                 <img className="h-5 ml-2"  src="./comment.png" alt="" />
+                <h1 className="text-white text-sm bg-sky-500 rounded-md w-8 ml-auto mr-5">+</h1>
               </div>
             </div> <div className=" scrollanim ">
               <img
@@ -84,6 +86,7 @@ export default function SignIn() {
               <div className="flex mt-2">
                 <img className="h-5 ml-2" src="./share.png" alt="" />
                 <img className="h-5 ml-2"  src="./comment.png" alt="" />
+                <h1 className="text-white text-sm bg-sky-500 rounded-md w-8 ml-auto mr-5">+</h1>
               </div>
             </div>
           </div>

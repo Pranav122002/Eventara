@@ -54,22 +54,6 @@ async function generatePDFCommittee(committee, recipient_number) {
       });
     });
 
-    // committee?.approvals?.forEach((member, index) => {
-    //   page.drawText(`${index + 1}. ${member?.name ?? 'Not available'}`, {
-    //     x: 70,
-    //     y: yPos - (index * 30),
-    //     size: 18,
-    //     color: rgb(0, 0, 0),
-    //   });
-    // });
-
-    // // Add space for signature
-    // const signatureX = 70; // X-position for signature
-    // const signatureY = 100; // Y-position for signature
-    // const signatureWidth = 200; // Width of signature image
-    // const signatureHeight = 50; // Height of signature image
-
-    // Save the PDF to a file
     const pdfsDirectory = path.join(__dirname, 'pdfs');
     if (!fs.existsSync(pdfsDirectory)) {
       fs.mkdirSync(pdfsDirectory);

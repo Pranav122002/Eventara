@@ -94,9 +94,9 @@ export default function GroupChat() {
   return (
     <>
       <div>
-        <div className="container mt-5" style={{ width: "40%" }}>
-          <div className="row">
-            <div className="col">
+        <div className="container mt-40 p-4  bg-white  rounded-md " style={{ width: "50%" }}>
+          <div className="row ">
+            <div className="col ">
               {messages.map((message, index) => (
                 <div key={index} className="card mb-2">
                   <div className="card-body">
@@ -105,7 +105,7 @@ export default function GroupChat() {
                         className="float-left"
                         
                       >
-                        <p className="text-xl">{message.sender_name}</p>
+                        <p className="text-xl text-left">{message.sender_name}</p>
                         <p className="card-text font-md ">{message.message}</p>
                       </span>
                       <span

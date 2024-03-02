@@ -29,6 +29,16 @@ const CommitteeForm = () => {
         phone_number: '',
         office_location: ''
     });
+    const [eventFormData, setEventFormData] = useState({
+        event_name: '',
+        event_date: '',
+        event_image: '',
+        event_register: '',
+        event_time: '',
+        event_venue: '',
+        event_mode: ''
+    });
+
     const [admins, setAdmins] = useState()
 
     const fetchAdmin = async () => {
@@ -70,6 +80,48 @@ const CommitteeForm = () => {
         }
     };
 
+    const handleEventUpload = async (file) => {
+        try {
+            const eventFormData = new FormData();
+            eventFormData.append('file', file);
+            eventFormData.append('upload_preset', UPLOAD_PRESET);
+
+            // Make a POST request to Cloudinary
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`, {
+                method: 'POST',
+                body: eventFormData,
+            });
+
+            const data = await response.json();
+            const imageUrl = data.secure_url;
+            console.log(imageUrl)
+            // Update the committee_image field in the formData state
+            setEventFormData((prevState) => ({
+                ...prevState,
+                event_image: imageUrl,
+            }));
+
+            return imageUrl;
+        } catch (error) {
+            console.error('Error uploading image to Cloudinary:', error);
+            return null;
+        }
+    };
+    const handleEventChange = async (e) => {
+        const { name, value , files} = e.target;
+        
+        if (name === 'event_image' && files && files.length > 0) {
+            // Upload the image and get the Cloudinary URL
+            await handleEventUpload(files[0]);
+        } else {
+            // For other form fields
+            setEventFormData((prevState) => ({
+                ...prevState,
+                [name]: value,
+            }));
+            console.log(eventFormData)
+        }
+    };
 
     const handleChange = async (e) => {
         const { name, value, files } = e.target;
@@ -160,22 +212,8 @@ const CommitteeForm = () => {
     const [eventVenue, setEventVenue] = useState("");
     const [eventMode, setEventMode] = useState("");
     const [allRooms, setAllRooms] = useState([])
-    const [eventFormData, setEventFormData] = useState({
-        event_name: '',
-        event_date: '',
-        event_time: '',
-        event_venue: '',
-        event_mode: ''
-    });
-
-    const handleEventChange = e => {
-        const { name, value } = e.target;
-        setEventFormData(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
-    };
-
+   
+    
     useEffect(() => {
         console.log(eventFormData)
     }, [eventFormData])
@@ -203,6 +241,8 @@ const CommitteeForm = () => {
             console.log(eventFormData)
             console.log('Selected admins:', selectedAdmins);
             e.preventDefault();
+           
+
             const res = await fetch(`${API_BASE_URL}/api/create-event`, {
                 method: "POST",
                 headers: {
@@ -248,18 +288,22 @@ const CommitteeForm = () => {
 
     const handleVenueSelect = (venues) => {
         setSelectedVenues(venues);
+        setEventFormData((prevState) => ({
+            ...prevState,
+            event_venue: venues, // Assuming event_venue is the field to store venue information
+        }));
         // You can perform any additional actions here based on selected venues
     };
     return (
     <>
-    <div className='ml-[20rem]'>
+    <div className='ml-[20rem] text-left mt-4'>
 
     
         <Container>
             <h1>Create Committee</h1>
             <Form>
                 <Form.Group controlId="committeeName">
-                    <Form.Label>Committee Name</Form.Label>
+                    <Form.Label className='mt-2'>Committee Name</Form.Label>
                     <Form.Control
                         type="text"
                         placeholder="Enter committee name"
@@ -271,7 +315,7 @@ const CommitteeForm = () => {
                 </Form.Group>
 
                 <Form.Group controlId="committeeDesc">
-                    <Form.Label>Committee Description</Form.Label>
+                    <Form.Label className='mt-3'>Committee Description</Form.Label>
                     <Form.Control
                         as="textarea"
                         rows={3}
@@ -284,7 +328,7 @@ const CommitteeForm = () => {
                 </Form.Group>
              
                 <Form.Group controlId="committeeImg">
-                    <Form.Label>Committee Image</Form.Label>
+                    <Form.Label className='mt-3'>Committee Image</Form.Label>
                     <Form.Control
                         type="file"
                         
@@ -302,7 +346,7 @@ const CommitteeForm = () => {
                     variant="primary"
                     onClick={handleModalOpen}
                     className="mt-3 bg-green-500">
-                    Next
+                    Create
                 </Button>
             </Form>
             <Modal show={showModal} onHide={handleModalClose}>
@@ -364,6 +408,15 @@ const CommitteeForm = () => {
                                                                 onChange={handleEventChange}
                                                             />
                                                         </Form.Group>
+                                                        <Form.Group controlId="eventPoster">
+                                                            <Form.Label>Event Poster</Form.Label>
+                                                            <Form.Control
+                                                                type="file"
+                                                                name="event_image"
+                                                                placeholder="Enter event image"
+                                                                onChange={handleEventChange}
+                                                            />
+                                                        </Form.Group>
                                                         <Form.Group controlId="eventDate">
                                                             <Form.Label>Event Date</Form.Label>
                                                             <Form.Control
@@ -377,6 +430,15 @@ const CommitteeForm = () => {
                                                             <Form.Control
                                                                 type="time"
                                                                 name='event_time'
+                                                                onChange={handleEventChange}
+                                                            />
+                                                        </Form.Group>
+                                                        <Form.Group controlId="eventRegister">
+                                                            <Form.Label>Event Registration Link</Form.Label>
+                                                            <Form.Control
+                                                                placeholder='Enter Registration Link'
+                                                                type="text"
+                                                                name='event_register'
                                                                 onChange={handleEventChange}
                                                             />
                                                         </Form.Group>

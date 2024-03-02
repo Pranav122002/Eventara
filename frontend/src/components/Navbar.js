@@ -28,17 +28,19 @@ export default function Navbar(props) {
   const storedUser = JSON.parse(localStorage.getItem("user"));
   user = storedUser;
   return (
-    <div className="p-[0.1rem] " >
+    <div className="p-[0.1rem] ">
       {!["/signup", "/signin", "/", "/about-us"].includes(
         useLocation().pathname
       ) && (
         <>
           {user?.role === "admin" && (
             <div className="vnavbarr pt-0 min-w-[18rem] h-screen bg-white border-r-2 ">
-               <div className="flex m-3 p-3 rounded ">
-                  <img src="./lines2.png" className="liness h-7" alt="" />
-                  <h1 className="font-Danc text-3xl italic text-gray-700">Eventara</h1>
-                </div>
+              <div className="flex m-3 p-3 rounded ">
+                <img src="./lines2.png" className="liness h-7" alt="" />
+                <h1 className="font-Danc text-3xl italic text-gray-700">
+                  Eventara
+                </h1>
+              </div>
 
               <NavLink
                 to="/permit"
@@ -50,42 +52,38 @@ export default function Navbar(props) {
                 </h1>
               </NavLink>
               <NavLink
-                  to="/events"
-                  className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
-
-                >
-                  <img className="h-7 m-3 " src="./event.png" alt="" />
-                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
-                    Events
-                  </h1>
-                </NavLink>
+                to="/events"
+                className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+              >
+                <img className="h-7 m-3 " src="./event.png" alt="" />
+                <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                  Events
+                </h1>
+              </NavLink>
               <NavLink
-                  to="/venue"
-                  className="w-11/12  no-underline  ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
-
-                >
-                  <img className="h-7 m-3 " src="./event.png" alt="" />
-                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
-                    Venue 
-                  </h1>
-                </NavLink>
-                <NavLink
-                  to="/personal-chat"
-                  className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
-
-                >
-                  <img className="h-10 m-3 " src="./conversation.png" alt="" />
-                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                to="/venue"
+                className="w-11/12  no-underline  ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+              >
+                <img className="h-7 m-3 " src="./event.png" alt="" />
+                <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                  Venue
+                </h1>
+              </NavLink>
+              <NavLink
+                to="/personal-chat"
+                className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+              >
+                <img className="h-10 m-3 " src="./conversation.png" alt="" />
+                <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
                   Personal Chat
-                  </h1>
-                </NavLink>
-                <NavLink
-                  to="/group-chat"
-                  className="w-11/12 ml-3 no-underline flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
-
-                >
-                  <img className="h-10 m-3 " src="./group.png" alt="" />
-                  <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
+                </h1>
+              </NavLink>
+              <NavLink
+                to="/group-chat"
+                className="w-11/12 ml-3 no-underline flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
+              >
+                <img className="h-10 m-3 " src="./group.png" alt="" />
+                <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
                   Global Chat
                   </h1>
                 </NavLink>
@@ -95,7 +93,7 @@ export default function Navbar(props) {
                   className="w-11/12 ml-3 no-underline flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
 
                 >
-                  <img className="h-10 m-3 " src="./group.png" alt="" />
+                  <img className="h-10 m-3 " src="./contract.png" alt="" />
                   <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
                   Signature
                   </h1>
@@ -119,13 +117,14 @@ export default function Navbar(props) {
               <div className="vnavbarr pt-0 min-w-[20rem] h-screen bg-white border-r-2 ">
                 <div className="flex m-3 p-3 rounded ">
                   <img src="./lines2.png" className="liness h-7" alt="" />
-                  <h1 className="font-Danc text-3xl italic text-gray-700">Eventara</h1>
+                  <h1 className="font-Danc text-3xl italic text-gray-700">
+                    Eventara
+                  </h1>
                 </div>
 
                 <NavLink
                   to="/events"
                   className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
-
                 >
                   <img className="h-7 m-3 " src="./Home.png" alt="" />
                   <h1 className="font-Danc text-xl text-gray-700  pt-3 pb-3  font-medium ">
@@ -136,23 +135,24 @@ export default function Navbar(props) {
                 <NavLink
                   to="/personal-chat"
                   className="w-11/12 ml-3 no-underline  flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
-
                 >
                   <img className="h-10 m-3 " src="./conversation.png" alt="" />
                   <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
-                  Personal Chat
+                    Personal Chat
                   </h1>
                 </NavLink>
                 <NavLink
                   to="/group-chat"
                   className="w-11/12 ml-3 no-underline flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
-
                 >
                   <img className="h-10 m-3 " src="./group.png" alt="" />
                   <h1 className="text-xl text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
-                  Global Chat
+                    Global Chat
                   </h1>
                 </NavLink>
+
+               
+
                 <NavLink
                   to="/committees"
                   className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
@@ -163,7 +163,7 @@ export default function Navbar(props) {
                   </h1>
                 </NavLink>
 
-                <NavLink
+                {/* <NavLink
                   to="/help-bot"
                   className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
                 >
@@ -171,7 +171,7 @@ export default function Navbar(props) {
                   <h1 className="text-xl  text-gray-700  pt-3 pb-3 tracking-tight font-medium ">
                     Help Bot
                   </h1>
-                </NavLink>
+                </NavLink> */}
                 <NavLink
                   to="/create-committee"
                   className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 "
@@ -181,14 +181,27 @@ export default function Navbar(props) {
                     New Committee
                   </h1>
                 </NavLink>
-               
+            
+                <div>
+                <NavLink
+                  to={`/user/${user._id}`}
+                  className="w-11/12 no-underline ml-3 flex hover:pl-2 hover:mr-2 rounded hover:bg-gray-100 mt-1.5 absolute bottom-20"
+                >
+                  <img className="h-8 m-3" src="./user.png" alt="" />
+                  <h1 className="text-xl  text-gray-700  pt-3 pb-3 tracking-tight font-medium">
+                    Profile
+                  </h1>
+                </NavLink>
+                </div>
                 <div
+                
                   className="cursor-pointer w-11/12 ml-3 flex rounded hover:bg-gray-100 bottom-3 absolute "
                   onClick={() => {
                     localStorage.clear();
                     navigate("/");
                   }}
-                >
+                > 
+                
                   <img className="h-6 m-3" src="./logout2.png" alt="" />
                   <h1 className="pl-1 pt-3 pb-3 font-medium text-red-500 text-base tracking-tight">
                     Logout
