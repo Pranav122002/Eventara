@@ -1,6 +1,4 @@
-# Teamname: kimchiCoders
-
-## Eventara
+# Eventara
 
 ## Introduction
 The Eventara is an Event Management tool where users can subscribe to committee, join a committee and even chat with a committee to clarify their doubts.
@@ -21,19 +19,19 @@ The Eventara is an Event Management tool where users can subscribe to committee,
 5. **Venue Availability**
    - Committees can check the availability of rooms and venues to avoid scheduling conflicts and ensure smooth event execution.
 
-## [Video Demo](https://youtu.be/Dv1Qu3aqctQ)
+## [Video Demo](https://www.youtube.com/watch?v=OKDkeBW41l8&t=4s)
 
 ## Getting Started
 To get started with the Agnethon Event Management System:
 
 1. Clone the repository:
 ```
-git clone https://github.com/Pauloper1/kimchiCoders.git
+git clone https://github.com/Pranav122002/Eventara.git
 ```
 
 2. Navigate to the project directory:
 ```
-cd KimchiCoders
+cd Eventara
 ```
 
 3. Start the React frontend:
